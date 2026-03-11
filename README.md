@@ -1,57 +1,63 @@
-# Competitor Intelligence Agent
+# Competitor Intel Agent
 
-Competitor intelligence that runs while you sleep. Configure once, receive weekly briefings with what changed, threat levels, and recommendations.
+Configure once in Claude, then receive weekly competitor briefings on market changes, threat shifts, and positioning opportunities.
 
-[Read the full story →](link-to-article)
+## Quick Start
 
----
+**Prerequisite:** Claude Code CLI installed and authenticated.
 
-## Get Started
+1. Open **Terminal** (Mac) or **PowerShell** (Windows)
+2. Paste this single block:
 
-**Step 1: Install the tools** (skip what you already have)
-
-- Git: [git-scm.com](https://git-scm.com)
-- Claude Code:
-  - Mac: `curl -fsSL https://claude.ai/install.sh | bash`
-  - Windows: `irm https://claude.ai/install.ps1 | iex`
-
-**Step 2: Run the agent**
-
-Paste this into Terminal (Mac) or PowerShell (Windows):
-```
-git clone https://github.com/ryan-hennebry/competitor-intelligence-agent && cd competitor-intelligence-agent && claude
+```bash
+git clone https://github.com/ryan-hennebry/competitor-intel.git && cd competitor-intel && claude
 ```
 
-Type anything and press Enter to start the agent.
+You do not need to edit files or write code.
+After this command, setup happens in chat.
 
----
+## Onboarding Flow
 
-## The Onboarding Conversation
+- Your company URL (or plain-English description)
+- Suggested competitors (you can add/remove)
+- Tracking priorities (positioning, partnerships, features, enterprise signals, hiring)
+- Delivery preference
 
-The agent asks a few questions, one at a time:
+## Delivery Modes
 
-1. **Your company:** Paste your URL or describe what you do. The agent researches your positioning and asks you to confirm.
+- **Files only** (default): saves to `output/briefings/`
+- **Email:** requires `RESEND_API_KEY`
+- **Slack:** requires `SLACK_TOKEN`
+- **Email + Slack:** both channels
 
-2. **Competitors:** The agent suggests competitors based on your positioning. Accept or adjust.
+## How It Works
 
-3. **What to track:** Defaults: positioning changes, partnerships, features, hiring. Accept or customize.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.svg">
+  <img src="assets/how-it-works-light.svg" alt="How Competitor Intel Agent works" width="500" />
+</picture>
 
-Then your first briefing generates. First briefing in ~15 minutes.
+*Editable source: `assets/how-it-works.mmd` (rendered with beautiful-mermaid for light/dark GitHub themes).*
 
----
+## Visual Proof
 
-## After Setup
+![Generated briefing placeholder](assets/readme-briefing-preview.png)
+*Placeholder: screenshot of a real briefing page (threat landscape + recommendations).*
 
-After the briefing, the agent suggests next steps based on what it found:
+![CLI workflow placeholder](assets/readme-cli-proof.png)
+*Placeholder: cropped CLI strip showing onboarding and a completed run.*
 
-- If it spotted a high threat: "Want a battle card for [competitor]?"
-- If it found gaps: "Should I draft messaging for these weaknesses?"
-- If you want automation: "Set up weekly briefings?"
+## Outputs
 
-Or just talk to it:
+- `context.md` -> source of truth for company context, competitors, priorities, delivery, run history
+- `output/briefings/` -> generated briefing outputs
+- `output/snapshots/` -> per-competitor snapshots for change tracking
+- `output/last_run.json` -> latest run metadata and status (`success`, `error`, `skipped`)
+
+## Try These Prompts
+
+Use natural prompts:
+- "Generate this week's briefing"
 - "Add [competitor]"
-- "What changed since last week?"
-- "Compare [competitor] over time"
-
-For automatic weekly briefings, say "Set up scheduled briefings" — the agent walks you through delivery options (email, Slack, or files).
-
+- "What changed since last run?"
+- "Set up scheduled briefings"
