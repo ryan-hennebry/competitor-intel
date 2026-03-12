@@ -4,8 +4,6 @@ Receive weekly competitor briefings on market changes, threat shifts, and positi
 
 No coding experience required.
 
-## Live demo
-
 <img src="assets/cli-demo-full.gif" alt="Competitor Intel CLI onboarding and report generation demo" width="896" />
 
 ## Quick start
