@@ -1,63 +1,71 @@
 # Competitor Intel Agent
 
-Configure once in Claude, then receive weekly competitor briefings on market changes, threat shifts, and positioning opportunities.
+Receive weekly competitor briefings on market changes, threat shifts, and positioning opportunities.
 
-## Quick Start
+No coding experience required.
 
-**Prerequisite:** Claude Code CLI installed and authenticated.
+## Quick start
 
-1. Open **Terminal** (Mac) or **PowerShell** (Windows)
-2. Paste this single block:
+**Prerequisite:** Claude Code installed and authenticated. [Setup instructions](https://code.claude.com/docs/en/quickstart).
+
+1. Paste this command into **Terminal** (Mac) or **PowerShell** (Windows):
 
 ```bash
 git clone https://github.com/ryan-hennebry/competitor-intel.git && cd competitor-intel && claude
 ```
 
-You do not need to edit files or write code.
-After this command, setup happens in chat.
+2. In Claude chat, complete onboarding with the agent. It will walk you through setup one question at a time.
 
-## Onboarding Flow
+## The onboarding flow
 
-- Your company URL (or plain-English description)
-- Suggested competitors (you can add/remove)
-- Tracking priorities (positioning, partnerships, features, enterprise signals, hiring)
-- Delivery preference
+- Provide your company URL (or a description)
+- The agent suggests competitors (you can add/remove)
+- Set priorities (keep defaults or customize)
+- Pick delivery: files only, email, Slack, or both
 
-## Delivery Modes
+## Visual proof
 
-- **Files only** (default): saves to `output/briefings/`
-- **Email:** requires `RESEND_API_KEY`
-- **Slack:** requires `SLACK_TOKEN`
-- **Email + Slack:** both channels
+- `assets/readme-cli-proof.png` (placeholder): one cropped CLI screenshot showing onboarding + completed run
+- `assets/readme-briefing-preview.png` (placeholder): one real briefing screenshot showing threat landscape + recommendations
 
-## How It Works
+## What you receive
+
+A weekly briefing with:
+
+- Quick take
+- Recommendations (Act Now / Watch / Opportunity)
+- What changed
+- Threat landscape
+- Open questions
+
+## Once your report has been generated
+
+Continue to interact with the agent for deeper analysis:
+- "Which competitor changed positioning most in the last 30 days?"
+- "Compare [Competitor A] vs [Competitor B] on ICP overlap."
+- "What are the top 3 risks to our narrative this quarter?"
+- "Show only changes that should alter pricing or packaging."
+- "What assumptions in the latest briefing are low confidence?"
+
+## Delivery options
+
+- **Files only** (default): saves outputs to `output/briefings/`
+- **Email via Resend:** requires a `RESEND_API_KEY`. Create one on [Resend](https://resend.com/docs/dashboard/api-keys/introduction), then paste it into the chat
+- **Slack:** requires a `SLACK_TOKEN`. Create a Slack app on [Slack](https://api.slack.com/apps), copy the Bot User OAuth Token (`xoxb-...`), then paste it into the chat
+- **Email + Slack:** requires both credentials
+
+## How it works
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.svg">
-  <img src="assets/how-it-works-light.svg" alt="How Competitor Intel Agent works" width="500" />
+  <img src="assets/how-it-works-light.svg" alt="How Competitor Intel Agent works" width="560" />
 </picture>
 
-*Editable source: `assets/how-it-works.mmd` (rendered with beautiful-mermaid for light/dark GitHub themes).*
+*Diagram source: `assets/how-it-works.mmd`.*
 
-## Visual Proof
+## The agent's output
 
-![Generated briefing placeholder](assets/readme-briefing-preview.png)
-*Placeholder: screenshot of a real briefing page (threat landscape + recommendations).*
-
-![CLI workflow placeholder](assets/readme-cli-proof.png)
-*Placeholder: cropped CLI strip showing onboarding and a completed run.*
-
-## Outputs
-
-- `context.md` -> source of truth for company context, competitors, priorities, delivery, run history
-- `output/briefings/` -> generated briefing outputs
+- `context.md` -> company context, competitors, priorities, delivery, and run history
+- `output/briefings/` -> generated briefings
 - `output/snapshots/` -> per-competitor snapshots for change tracking
-- `output/last_run.json` -> latest run metadata and status (`success`, `error`, `skipped`)
-
-## Try These Prompts
-
-Use natural prompts:
-- "Generate this week's briefing"
-- "Add [competitor]"
-- "What changed since last run?"
-- "Set up scheduled briefings"
+- `output/last_run.json` -> latest agent run data and status (`success`, `error`, `skipped`)
