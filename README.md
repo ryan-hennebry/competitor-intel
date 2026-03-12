@@ -69,3 +69,9 @@ Continue to interact with the agent for deeper analysis:
 - `output/briefings/` -> generated briefings
 - `output/snapshots/` -> per-competitor snapshots for change tracking
 - `output/last_run.json` -> latest agent run data and status (`success`, `error`, `skipped`)
+
+## Project standards
+
+- [MIT License](LICENSE)
+- [Security Policy](SECURITY.md)
+- [Contributing Guide](CONTRIBUTING.md)
