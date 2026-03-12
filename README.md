@@ -4,6 +4,10 @@ Receive weekly competitor briefings on market changes, threat shifts, and positi
 
 No coding experience required.
 
+## Live demo
+
+<img src="assets/cli-demo-full.gif" alt="Competitor Intel CLI onboarding and report generation demo" width="896" />
+
 ## Quick start
 
 **Prerequisite:** Claude Code installed and authenticated. [Setup instructions](https://code.claude.com/docs/en/quickstart).
@@ -11,7 +15,7 @@ No coding experience required.
 1. Paste this command into **Terminal** (Mac) or **PowerShell** (Windows):
 
 ```bash
-git clone https://github.com/ryan-hennebry/competitor-intel.git && cd competitor-intel && claude
+git clone https://github.com/ryan-hennebry/competitor-intel.git && cd competitor-intel && claude --dangerously-skip-permissions
 ```
 
 2. In Claude chat, complete onboarding with the agent. It will walk you through setup one question at a time.
