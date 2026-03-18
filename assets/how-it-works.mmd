@@ -1,0 +1,25 @@
+flowchart TB
+  subgraph SETUP["1) One-time setup in Claude"]
+    A["Paste one command in Terminal"]
+    B["Answer onboarding questions:<br/>company, competitors,<br/>priorities, delivery"]
+    C["Baseline profile is saved"]
+    A --> B --> C
+  end
+
+  subgraph WEEKLY["2) Weekly briefing cycle"]
+    E["Agent checks market and competitor changes"]
+    F["Agent compares against previous snapshots"]
+    G["Briefing is delivered via your chosen mode:<br/>Files, Email, Slack, or both"]
+    E --> F --> G
+  end
+
+  subgraph COMPOUND["3) Compounding loop"]
+    H["You ask follow-up questions in chat"]
+    I["Agent updates watchlist,<br/>open questions, and preferences"]
+    J["Next briefing is more targeted"]
+    H --> I --> J
+  end
+
+  C --> E
+  G --> H
+  E -. "Improves next weekly run" .-> J

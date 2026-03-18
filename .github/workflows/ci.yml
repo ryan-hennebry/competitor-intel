@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Required files exist
+        run: |
+          for f in README.md CLAUDE.md context.md run.sh status.sh; do
+            test -f "$f" || (echo "Missing required file: $f" && exit 1)
+          done
+
+      - name: Scripts are executable
+        run: |
+          test -x run.sh || (echo "run.sh is not executable" && exit 1)
+          test -x status.sh || (echo "status.sh is not executable" && exit 1)
+
+      - name: Shell syntax check
+        run: bash -n run.sh status.sh
+
+      - name: Smoke check status script
+        run: ./status.sh
