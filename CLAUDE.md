@@ -119,7 +119,7 @@ When run via `run.sh`, operate autonomously:
    {
      "status": "success|error|skipped",
      "date": "2026-01-15",
-     "briefing": "2026-01-15-briefing.md",
+     "briefing": "2026-01-15-briefing.pdf",
      "timestamp": "2026-01-15T20:00:00Z",
      "competitors_analyzed": 5,
      "competitors_failed": [],

@@ -2,7 +2,7 @@
 
 ## Briefing Output
 
-Generate at `output/briefings/{YYYY-MM-DD}-briefing.md`:
+Draft the briefing using this structure, then save the final deliverable at `output/briefings/{YYYY-MM-DD}-briefing.pdf`:
 
 ```
 # Competitor Intelligence Briefing — {date}

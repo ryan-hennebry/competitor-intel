@@ -1,10 +1,10 @@
 # Competitor Intel Agent
 
-Receive weekly competitor briefings on market changes, threat shifts, and positioning opportunities.
+Track competitor changes and get a weekly briefing on the shifts that actually matter.
 
 No coding experience required.
 
-<img src="assets/cli-demo-full.gif" alt="Competitor Intel CLI onboarding and report generation demo" width="896" />
+<img src="assets/cli-demo-full.gif" alt="Competitor Intel CLI onboarding and first briefing preview demo" width="896" />
 
 ## Quick start
 
@@ -13,10 +13,10 @@ No coding experience required.
 1. Paste this command into **Terminal** (Mac) or **PowerShell** (Windows):
 
 ```bash
-git clone https://github.com/<your-username>/competitor-intel.git && cd competitor-intel && claude --dangerously-skip-permissions
+git clone https://github.com/ryan-hennebry/competitor-intel.git && cd competitor-intel && claude --dangerously-skip-permissions
 ```
 
-2. In Claude chat, complete onboarding with the agent. It will walk you through setup one question at a time.
+2. In Claude Code, complete onboarding with the agent. It will walk you through setup one question at a time.
 
 ## The onboarding flow
 
@@ -25,22 +25,17 @@ git clone https://github.com/<your-username>/competitor-intel.git && cd competit
 - Set priorities (keep defaults or customize)
 - Pick delivery: files only, email, Slack, or both
 
-## Visual proof
-
-- `assets/readme-cli-proof.png` (placeholder): one cropped CLI screenshot showing onboarding + completed run
-- `assets/readme-briefing-preview.png` (placeholder): one real briefing screenshot showing threat landscape + recommendations
-
 ## What you receive
 
 A weekly briefing with:
 
-- Quick take
-- Recommendations (Act Now / Watch / Opportunity)
-- What changed
-- Threat landscape
-- Open questions
+- A quick take on the single most important shift
+- Recommendations grouped into Act Now, Watch, and Opportunity
+- What changed across competitors and your own company
+- A threat landscape showing why each move matters
+- Open questions worth tracking in the next run
 
-## Once your report has been generated
+## Once your first briefing has been generated
 
 Continue to interact with the agent for deeper analysis:
 - "Which competitor changed positioning most in the last 30 days?"
@@ -49,12 +44,12 @@ Continue to interact with the agent for deeper analysis:
 - "Show only changes that should alter pricing or packaging."
 - "What assumptions in the latest briefing are low confidence?"
 
-## Delivery options
+## Optional delivery
 
-- **Files only** (default): saves outputs to `output/briefings/`
-- **Email via Resend:** requires a `RESEND_API_KEY`. Create one on [Resend](https://resend.com/docs/dashboard/api-keys/introduction), then paste it into the chat
-- **Slack:** requires a `SLACK_TOKEN`. Create a Slack app on [Slack](https://api.slack.com/apps), copy the Bot User OAuth Token (`xoxb-...`), then paste it into the chat
-- **Email + Slack:** requires both credentials
+- **Files only** (default): saves each briefing to `output/briefings/`
+- **Email via Resend:** optional one-time [Resend](https://resend.com/docs/dashboard/api-keys/introduction) setup guided in chat
+- **Slack:** optional one-time [Slack](https://api.slack.com/apps) setup guided in chat
+- **Email + Slack:** enable both if you want a saved file plus delivery
 
 ## How it works
 
@@ -67,10 +62,9 @@ Continue to interact with the agent for deeper analysis:
 
 ## The agent's output
 
-- `context.md` -> company context, competitors, priorities, delivery, and run history
-- `output/briefings/` -> generated briefings
-- `output/snapshots/` -> per-competitor snapshots for change tracking
-- `output/last_run.json` -> latest agent run data and status (`success`, `error`, `skipped`)
+- Saved weekly briefings in `output/briefings/`
+- Per-competitor snapshots in `output/snapshots/` for change tracking
+- Company context, competitors, priorities, and delivery preferences in `context.md`
 
 ## Project standards
 

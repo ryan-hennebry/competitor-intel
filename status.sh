@@ -29,7 +29,7 @@ else
 fi
 
 # Check latest briefing
-LATEST=$(ls -t output/briefings/*.md 2>/dev/null | head -1)
+LATEST=$(ls -t output/briefings/*.pdf 2>/dev/null | head -1)
 if [ -n "$LATEST" ]; then
   echo "Latest briefing: $(basename "$LATEST")"
 fi
