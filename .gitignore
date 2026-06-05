@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Environment / secrets
+.env
+.env.*
+
+# --- Real agent output is LOCAL-ONLY (PII gate) ---
+# The output/ tree carries personalized run data (briefing PDF,
+# raw report txt, competitor snapshot JSONs, research markdown).
+# These must NEVER be committed. Only the .gitkeep placeholders are tracked.
+output/**
+!output/
+!output/briefings/
+!output/snapshots/
+!output/briefings/.gitkeep
+!output/snapshots/.gitkeep
+
+# --- Remotion video projects: track source only ---
+videos/**/node_modules/
+videos/**/out/
+videos/**/dist/
