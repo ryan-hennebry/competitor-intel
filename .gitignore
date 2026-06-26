@@ -5,9 +5,12 @@
 .env
 .env.*
 
+# Local Claude Code settings (machine-specific; never publish)
+**/.claude/settings.local.json
+
 # --- Real agent output is LOCAL-ONLY (PII gate) ---
-# The output/ tree carries personalized run data (briefing PDF,
-# raw report txt, competitor snapshot JSONs, research markdown).
+# The output/ tree carries personalized run data (briefing PDF, raw report
+# txt, competitor snapshot JSONs, research markdown).
 # These must NEVER be committed. Only the .gitkeep placeholders are tracked.
 output/**
 !output/
