@@ -1,6 +1,8 @@
-# Competitor Intel Agent
+# Competitor Intel
 
-Track competitor changes and get a weekly briefing on the shifts that actually matter.
+Track competitor moves and surface threats and opportunities.
+
+Each run compares your company and competitors with the last one, then turns the important changes into a briefing with recommended actions.
 
 No coding experience required.
 
@@ -8,66 +10,38 @@ No coding experience required.
 
 ## Quick start
 
-**Prerequisite:** Claude Code installed and authenticated. [Setup instructions](https://code.claude.com/docs/en/quickstart).
-
-1. Paste this command into **Terminal** (Mac) or **PowerShell** (Windows):
+1. [Install Claude Code](https://code.claude.com/docs/en/quickstart).
+2. Paste this into **Terminal** (Mac) or **PowerShell** (Windows):
 
 ```bash
-git clone https://github.com/ryan-hennebry/competitor-intel.git && cd competitor-intel && claude --dangerously-skip-permissions
+git clone https://github.com/ryan-hennebry/competitor-intel.git && cd competitor-intel && claude --permission-mode auto
 ```
 
-2. In Claude Code, complete onboarding with the agent. It will walk you through setup one question at a time.
+Follow the onboarding. It researches your company, suggests competitors, and asks you to confirm what matters.
 
-## The onboarding flow
+## Briefing
 
-- Provide your company URL (or a description)
-- The agent suggests competitors (you can add/remove)
-- Set priorities (keep defaults or customize)
-- Pick delivery: files only, email, Slack, or both
+- The most important shift
+- Recommendations: **Act Now**, **Watch**, or **Opportunity**
+- What changed across competitors and your company
+- Why each move matters
+- What to track next
 
-## What you receive
+## Ask follow-up questions
 
-A weekly briefing with:
-
-- A quick take on the single most important shift
-- Recommendations grouped into Act Now, Watch, and Opportunity
-- What changed across competitors and your own company
-- A threat landscape showing why each move matters
-- Open questions worth tracking in the next run
-
-## Once your first briefing has been generated
-
-Continue to interact with the agent for deeper analysis:
 - "Which competitor changed positioning most in the last 30 days?"
-- "Compare [Competitor A] vs [Competitor B] on ICP overlap."
 - "What are the top 3 risks to our narrative this quarter?"
 - "Show only changes that should alter pricing or packaging."
-- "What assumptions in the latest briefing are low confidence?"
 
-## Optional delivery
+## Delivery
 
-- **Files only** (default): saves each briefing to `output/briefings/`
-- **Email via Resend:** optional one-time [Resend](https://resend.com/docs/dashboard/api-keys/introduction) setup guided in chat
-- **Slack:** optional one-time [Slack](https://api.slack.com/apps) setup guided in chat
-- **Email + Slack:** enable both if you want a saved file plus delivery
+Run it on demand or on a schedule. Briefings save to `output/briefings/` and can also be sent by email or Slack.
 
 ## How it works
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.svg">
-  <img src="assets/how-it-works-light.svg" alt="How Competitor Intel Agent works" width="560" />
+  <img src="assets/how-it-works-light.svg" alt="How Competitor Intel works" width="560" />
 </picture>
 
 *Diagram source: `assets/how-it-works.mmd`.*
-
-## The agent's output
-
-- Saved weekly briefings in `output/briefings/`
-- Per-competitor snapshots in `output/snapshots/` for change tracking
-- Company context, competitors, priorities, and delivery preferences in `context.md`
-
-## Project standards
-
-- [MIT License](LICENSE)
-- [Security Policy](SECURITY.md)
-- [Contributing Guide](CONTRIBUTING.md)
