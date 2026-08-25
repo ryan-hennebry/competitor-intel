@@ -43,5 +43,3 @@ Run it on demand or on a schedule. Briefings save to `output/briefings/` and can
   <source media="(prefers-color-scheme: dark)" srcset="assets/how-it-works-dark.svg">
   <img src="assets/how-it-works-light.svg" alt="How Competitor Intel works" width="560" />
 </picture>
-
-*Diagram source: `assets/how-it-works.mmd`.*
