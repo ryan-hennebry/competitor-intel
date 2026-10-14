@@ -1,0 +1,869 @@
+<!doctype html>
+<!--GENERATED-->
+<!--
+  Variant T (research/40-variant-t-spec.md), the template build/web.py fills from a run's brief.json.
+  S's page (spec 35) with Ryan's notes on S: new-tab links with no arrow glyph, a doubled underline on
+  hover, hover intent with a safe polygon and a scroll reset, map cards beside their logo, the rail
+  level with Quick take, the footer on the wide grid, and no grey sentence in the reading column.
+  § numbers are spec 35's unless 40 is named. The page's anatomy lives here: every heading but the
+  moves' and the matrix's, the banner, Also built and the footer. No width below is tuned to one
+  brief's text: the five that were are measured by build/web.py on each page into the generated
+  style block, or left to the table's own min-content.
+-->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Share metadata: build/web.py's FRAMINGS, one definition each. -->
+<title>{{TITLE}}</title>
+<meta name="description" content="{{DESC}}">
+<!-- SNAPSHOT-EXEMPT (the page's own address) -->
+<link rel="canonical" href="{{SITE}}">
+<!-- /SNAPSHOT-EXEMPT -->
+<meta property="og:type" content="article">
+<!--PAGEDATE-->
+<meta property="og:site_name" content="Ryan Hennebry">
+<meta property="og:locale" content="en_GB">
+<meta property="og:url" content="{{SITE}}">
+<meta property="og:title" content="{{TITLE}}">
+<meta property="og:description" content="{{DESC}}">
+<meta property="og:image" content="{{OGIMG}}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:image:alt" content="{{OGALT}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image:alt" content="{{OGALT}}">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#fbfcfd">
+<link rel="icon" href="favicon-p.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="fonts/plex-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* §5 One face: IBM Plex Sans, self-hosted, OFL, roman only, with a size-adjusted Arial fallback.
+   build/web.py subsets the checked-in master to each page's own characters. */
+@font-face { font-family: "IBM Plex Sans"; src: url("fonts/plex-sans-var.woff2") format("woff2-variations"); font-weight: 100 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "IBM Plex Sans Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 100 449; size-adjust: 100.60%; }
+@font-face { font-family: "IBM Plex Sans Fallback"; src: local("Arial"), local("ArialMT"); font-weight: 450 549; size-adjust: 102.71%; }
+@font-face { font-family: "IBM Plex Sans Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"); font-weight: 550 700; size-adjust: 97.21%; }
+
+/* §4 Colour: light only, neutrals only. */
+:root {
+  --ground: #fbfcfd; --text: #1a1c1e; --muted: #4d535a; --edge: #8a8f94; --rule: #dfe2e5;
+  --surface: var(--rule); --wash: #f5f6f7; --focus: #1a1c1e; --press: rgb(26 28 30 / 6%);
+  --glyph: #aaaeb2; /* §5 the bar's slash, 2.18:1 on --ground: ITL's ratio (33§4) */
+  --shadow-card: 0 0 0 1px rgb(26 28 30 / 6%), 0 4px 8px rgb(26 28 30 / 6%), 0 12px 24px rgb(26 28 30 / 4%);
+  color-scheme: light;
+}
+
+/* §3 Type: Butterick's page matched by x-height (PT/point-size). Plex at 20 has a 10.32 x-height,
+   98% of his 10.51; 28 is 140% leading. letter-spacing is 0 on every role (32 F9). */
+:root {
+  --sans: "IBM Plex Sans", "IBM Plex Sans Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-h1: 26px; --lh-h1: 32px;
+  --fs-h2: 22px; --lh-h2: 28px;
+  --fs-body: 20px; --lh-body: 28px;
+  --fs-td: 16px; --lh-td: 23px; --fs-ui: 16px; --fs-small: 15px;
+  --fs-chip: 12px; --lh-chip: 16px; --fs-foot: 14px; --lh-foot: 21px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* §4 Grid: the rail, a gap, a 608 column and a matching gap. From 78rem a second rail's width
+     balances the first, so the text holds the viewport's centre and the rail hangs in the margin. */
+  --pad: 16px; --col: 608px; --rail: 0px; --gap: 0px; --shift: 0px;
+  --grid-w: calc(var(--rail) + 2 * var(--gap) + var(--col));
+  --end: var(--gap);
+  /* Rhythm, as box gaps (30§6, 32 F1). Print halves them. */
+  --g-head: 72px; --g-title: 32px; --g-sec: 64px; --g-h2p: 24px; --g-h2t: 28px;
+  --g-para: 20px; --g-tbl: 24px; --g-fig: 40px; --g-foot: 128px;
+}
+@media (width >= 40rem) { :root { --pad: 32px; } }
+@media (width >= 64rem) { :root { --rail: 208px; --gap: 64px; --shift: 104px; } }
+@media (width >= 78rem) {
+  :root { --shift: 0px; --grid-w: calc(2 * var(--rail) + 2 * var(--gap) + var(--col)); --end: calc(var(--gap) + var(--rail)); }
+}
+@media (width < 30rem) {
+  :root { --fs-h1: 24px; --lh-h1: 30px; --fs-h2: 20px; --lh-h2: 26px; --fs-body: 16px; --lh-body: 23px; --g-para: 16px; }
+}
+
+/* Base. No font smoothing (22f2): macOS draws the face at its own weight. */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  font-kerning: normal;
+  hanging-punctuation: first;
+  scroll-padding-top: 96px;      /* the 64 bar plus 32 of air */
+}
+body { margin: 0; background: var(--ground); color: var(--text); font: 400 var(--fs-body)/var(--lh-body) var(--sans); }
+p, h1, h2, ol, ul, figure { margin: 0; }
+strong { font-weight: 600; color: var(--text); }
+::selection, ::target-text { background: var(--muted); color: var(--ground); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.nw { white-space: nowrap; }
+
+/* One ring. Components that set their own radius keep it. */
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+@media (forced-colors: active) { :focus-visible { outline: revert; outline-offset: revert; } }
+
+/* One link treatment. :where() so every component rule wins on purpose. */
+:where(a) {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-skip-ink: auto;
+  text-decoration-color: var(--muted);
+}
+/* Press: a wash over the element's own fill, on pointer-down, no motion. */
+:where(a, button, label):active { background-image: linear-gradient(var(--press), var(--press)); }
+:where(a, button, label) { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+button { font: inherit; color: inherit; }
+
+/* Skip link (17's values). */
+.skip {
+  position: fixed; top: 12px; left: calc(16px + env(safe-area-inset-left, 0px)); z-index: 20;
+  display: flex; align-items: center; min-height: 40px; padding-inline: 16px; border-radius: 6px;
+  background-color: var(--surface); color: var(--text); font-size: var(--fs-small); line-height: 20px;
+  text-decoration: none; transform: translateY(calc(-100% - 13px));
+}
+.skip:focus-visible { transform: none; }
+
+/* §5 Frame and bar: P's brand block (the studio mark, P's slash, the wordmark), then R's nav. 64 tall
+   at every width. The mark's edge sits on the 16 inset; its 40x40 hit box hangs 11 either side. */
+.frame { position: relative; display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+.spy-end { position: absolute; bottom: 0; width: 1px; height: 1px; }
+.main { flex: 1 0 auto; padding-top: var(--g-head); container-type: inline-size; }
+.main:focus { outline: none; }
+.bar { position: sticky; top: 0; z-index: 10; background-color: var(--ground); }
+.bar :is(a, button) { scroll-margin-top: -96px; } /* the bar is always in view: a Tab onto it must not scroll */
+.head {
+  display: flex; align-items: center; justify-content: space-between; column-gap: 16px; height: 64px;
+  padding-inline: calc(16px + env(safe-area-inset-left, 0px)) calc(16px + env(safe-area-inset-right, 0px));
+}
+.head__brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.head__umbrella { display: grid; place-items: center; flex: none; min-width: 40px; min-height: 40px; margin-inline: -11px; }
+.head__logo { display: block; width: 18px; height: 18px; border-radius: 4px; }
+.head__slash { flex: none; color: var(--glyph); }
+.head__mark {
+  display: flex; align-items: center; min-height: 40px; min-width: 0;
+  font-size: 16px; line-height: 20px; font-weight: 500; color: var(--text); text-decoration: none; white-space: normal;
+}
+.head__nav { display: flex; align-items: center; gap: 24px; }
+.head__link {
+  display: flex; align-items: center; min-height: 40px; padding: 0; border: 0; background-color: transparent; cursor: pointer;
+  font-size: 15px; line-height: 20px; font-weight: 400; color: var(--muted); text-decoration: none; white-space: nowrap;
+}
+body:has(#contents:popover-open) .head__toc { color: var(--text); }
+@media (width >= 64rem) { .head__toc { display: none; } }
+/* ITL's "what gives": below 23rem the mark and slash go first; without the rule the bar collides by
+   50 at 320 (40 §4). "Competitor intel" is 119.06 at 16/500 and holds one line at every width. */
+@media (width < 23rem) { .head__umbrella, .head__slash { display: none; } }
+
+/* The example banner (Ryan, 5 October 2026: the banner prototype's variant A, copy 1). Site chrome above
+   the sticky bar, ink and ground swapped; it scrolls away and the bar pins at 0. Its text sits on the
+   title's grid, so its left edge is the h1's: .banner__in repeats .layout's box and column. The ink
+   lines up too: Plex's "E" (600) starts 81.72/1000 of an em in, the h1's "A" 20.88, so the first line
+   is indented by the difference, A's at --fs-h1 less E's at --fs-bn (-0.76 at 26 and 16). A wrapped
+   line starts on the box edge, where a lower-case letter's ink sits within half a pixel of the A's. */
+.banner {
+  --fs-bn: 16px;
+  padding-block: 12px; background-color: var(--text); color: var(--ground);
+  font-size: var(--fs-bn); line-height: 22px;
+}
+.banner__in { display: grid; grid-template-columns: minmax(0, 1fr); width: min(100% - 2 * var(--pad), var(--grid-w)); margin-inline: auto; }
+.banner__t { grid-column: 1; min-width: 0; text-indent: calc(0.02088 * var(--fs-h1) - 0.08172 * var(--fs-bn)); text-wrap: balance; }
+@media (width >= 64rem) {
+  .banner__in { grid-template-columns: var(--rail) minmax(0, var(--col)); column-gap: var(--gap); padding-inline-end: var(--end); }
+  .banner__t { grid-column: 2; }
+}
+@media (width < 23rem) { .banner { --fs-bn: 15px; } } /* two lines at 320, as the bar's "what gives" step */
+.banner strong { color: inherit; }
+.banner a { text-decoration-color: rgb(251 252 253 / 60%); }
+.banner :focus-visible { outline-color: var(--ground); } /* the shared 2px ring, light on the dark strip */
+.banner a:active { background-image: linear-gradient(rgb(251 252 253 / 14%), rgb(251 252 253 / 14%)); }
+
+/* §4 Grid. The box is centred. From 64rem it holds the rail, a gap, the column and a matching gap,
+   so the text centre is the viewport's plus --shift (104); from 78rem it holds a second rail's width
+   too, so the text holds the centre (PT/maxims-of-page-layout) and the rail hangs in the margin. */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr); width: min(100% - 2 * var(--pad), var(--grid-w)); margin-inline: auto; }
+.title, .brief { grid-column: 1; min-width: 0; }
+.title { grid-row: 1; margin-bottom: var(--g-head); }
+.brief { grid-row: 2; }
+@media (width >= 64rem) {
+  .layout { grid-template-columns: var(--rail) minmax(0, var(--col)); column-gap: var(--gap); padding-inline-end: var(--end); }
+  .title, .brief { grid-column: 2; }
+}
+
+/* §7 The title: 26/32 at 600 (130% of the body), cap-trimmed. The phrase spans set the breaks by
+   sense, so text-wrap is plain wrap, not balance. .h1__who breaks only between its two phrases. */
+.title h1 {
+  font: 600 var(--fs-h1)/var(--lh-h1) var(--sans); color: var(--text);
+  text-box: trim-both cap alphabetic; text-wrap: wrap;
+}
+.h1__who { display: inline-block; }
+.run { margin-top: var(--g-title); color: var(--text); text-box: trim-both cap alphabetic; text-wrap: pretty; }
+
+/* §17 Contents: one popover element; a sticky 208 rail from 64rem, a sheet under the bar below. */
+#contents ol { margin: 0; padding: 0; list-style: none; }
+#contents a {
+  display: flex; align-items: center; min-height: 40px; margin-inline-start: -8px; padding: 10px 8px;
+  border-radius: 6px; font-size: var(--fs-ui); line-height: 20px; font-weight: 400; color: var(--muted);
+  text-decoration: none; transition: color 120ms var(--ease-out), background-color 120ms var(--ease-out);
+}
+@media (pointer: coarse) { #contents a { min-height: 44px; } }
+#contents a[aria-current="location"] { color: var(--text); background-color: var(--rule); }
+@media (width >= 64rem) {
+  /* The rail resets the UA popover box. Its 4/12 padding, cancelled by an equal negative margin, is
+     room for the -8 hang and the 4px ring, which overflow: auto would otherwise clip.
+     Row 2: the first cap sits level with Quick take's (40 §9). Row 2's top edge is the cap-trimmed
+     h2's cap top; -18.83 is 4 rail padding + 10 item padding + 4.83 line top to cap top at 16/20.
+     Stuck, the first cap rides the 96 scroll-padding line, where a heading reached from the rail lands. */
+  #contents:not(:popover-open) {
+    display: block; position: sticky; inset: auto; top: calc(96px - 18.83px);
+    grid-column: 1; grid-row: 2; align-self: start;
+    margin: -18.83px -4px -4px -12px; padding: 4px 4px 4px 12px; border: 0;
+    background: none; color: inherit; width: auto; height: auto;
+    max-height: calc(100dvh - 96px + 18.83px - 28px); overflow: auto; overscroll-behavior: contain;
+  }
+}
+@media (width < 64rem) {
+  #contents {
+    position: fixed; inset: var(--sheet-top, 64px) 0 auto 0; width: auto; height: auto; margin: 0;
+    max-height: calc(100dvh - var(--sheet-top, 64px)); overflow: auto; overscroll-behavior: contain;
+    padding: 8px 16px 16px; border: 0; border-bottom: 1px solid var(--rule);
+    background-color: var(--ground); color: var(--text);
+    opacity: 0;
+    transition: opacity 100ms var(--ease-out), overlay 100ms allow-discrete, display 100ms allow-discrete;
+  }
+  #contents:popover-open {
+    opacity: 1; translate: 0 0;
+    transition: opacity 150ms var(--ease-out), translate 150ms var(--ease-out),
+      overlay 150ms allow-discrete, display 150ms allow-discrete;
+  }
+  @starting-style { #contents:popover-open { opacity: 0; translate: 0 -4px; } }
+  #contents::backdrop { background: transparent; }
+}
+@media (40rem <= width < 64rem) { #contents { padding-inline: 32px; } }
+
+/* Body: box gaps (30§6, §4). A paragraph gap is 100% of the body (PT/space-between-paragraphs). */
+.brief > p { text-wrap: pretty; }
+.brief h2 {
+  font-size: var(--fs-h2); line-height: var(--lh-h2); font-weight: 600; color: var(--text);
+  text-box: trim-both cap alphabetic; text-wrap: pretty;
+}
+.brief > h2 { margin-top: var(--g-sec); }
+.brief > h2:first-child { margin-top: 0; }
+.brief > h2 + :is(p, ol) { margin-top: var(--g-h2p); }
+.brief > h2 + .tbl { margin-top: var(--g-h2t); }
+.brief > :is(p, ol) + :is(p, ol) { margin-top: var(--g-para); }
+.brief > :is(p, ol) + .tbl, .brief > .tbl + :is(p, ol) { margin-top: var(--g-tbl); }
+.brief > .q2 { margin-top: var(--g-fig); }  /* the map belongs to the Quick Take */
+.brief > ol > li + li { margin-top: var(--g-para); }
+/* 40 §3 (RT-7, 38§3): the step is its own line, a hard break inside its paragraph ("Same paragraph,
+   different line", PT/hard-line-breaks), in the text colour at 400: position does the work. */
+.next { display: block; color: var(--text); }
+.brief > ol { list-style: decimal outside; padding-inline-start: 24px; }
+.brief > ol > li::marker { color: var(--muted); } /* the subset's default digits are already tabular lining */
+@media (width >= 40rem) { .brief > ol { padding-inline-start: 0; } }
+@media (width < 30rem) { .brief > p, .brief li { hyphens: auto; hyphenate-limit-chars: 8 4 4; } .brief strong { hyphens: manual; } } /* 22f7, 31 Rec 5 */
+.name { hyphens: manual; } /* G65: web.py puts each cohort and client name in .name; Chrome splits a lowercase one */
+/* W6: WebKit's pretty sets the narrow column's lines short (a mean of 41.8 characters against the 43
+   floor; Chrome's is 45.6), so below 30rem WebKit wraps greedily. hanging-punctuation is a WebKit-only
+   property today, so the query leaves Chrome's pretty, and its pixels, as they are. */
+@supports (hanging-punctuation: first) { @media (width < 30rem) { .brief > p { text-wrap: wrap; } } }
+/* G36, G50: WebKit hyphenates capitalised words, company names among them; Chrome leaves them whole.
+   CSS cannot exempt a proper noun, so below 30rem WebKit breaks only at authored hyphens; Chrome keeps auto. */
+@supports (hanging-punctuation: first) { @media (width < 30rem) { .brief > p, .brief li { hyphens: manual; } } }
+/* W6: WebKit leaves a scroller's inline-end padding out of its scroll range, so the matrix's last column
+   scrolled flush with the clip and cut its 4px focus ring; .mx's 4 of end padding, as a margin, counts there. */
+@supports (hanging-punctuation: first) { .mx > table { margin-inline-end: 4px; } }
+
+/* Tables: one --edge rule under the head, --rule between body rows. */
+table { width: 100%; border-collapse: collapse; font-size: var(--fs-td); line-height: var(--lh-td); }
+th {
+  padding: 0 16px 8px 0; border-bottom: 1px solid var(--edge); vertical-align: bottom; text-align: start;
+  font-weight: 500; line-height: 20px; color: var(--text); text-wrap: pretty;
+}
+td {
+  padding: 8px 16px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: start;
+  font-weight: 400; color: var(--text); text-wrap: pretty; overflow-wrap: break-word;
+}
+tbody tr:last-child td { border-bottom: 0; }
+th:last-child, td:last-child { padding-inline-end: 0; }
+.t-high { font-weight: 600; color: var(--text); white-space: nowrap; }
+.t-watch { font-weight: 400; color: var(--text); white-space: nowrap; } /* 22f12 */
+table.t3 { table-layout: fixed; }
+table.t3 td:first-child { overflow-wrap: normal; } /* a company name never splits mid-word */
+table.t3 th:nth-child(1) { width: 18%; } /* T's share; where a page's widest name word plus 16 outgrows it,
+   build/web.py's generated block sets the column to calc(var(--t3-name) + 16px) from 40rem up */
+table.t3 th:nth-child(2) { width: 52%; } /* 31 Rec 6 */
+table.t3 th:nth-child(3) { width: 30%; }
+/* Below 40rem the rivals table reflows: a sentence's last word, its bound date and its chip run to
+   about 195, wider than a 34% cell at 390, so the change and the means stack beside the company in
+   one column (272 at 390, 200 at 320). The build sets ARIA table roles, so the semantics survive.
+   The name column is --t3-name, the widest unbreakable word of its cells measured per page, plus the
+   cell's end padding: 16 here, 8 below 23rem. */
+@media (width < 40rem) {
+  table.t3, table.t3 :is(thead, tbody) { display: block; }
+  table.t3 tr { display: grid; grid-template-columns: calc(var(--t3-name) + 16px) minmax(0, 1fr); }
+  table.t3 th:nth-child(n) { width: auto; }
+  table.t3 :is(th, td):first-child { grid-row: 1 / span 2; }
+  table.t3 :is(th, td):nth-child(n + 2) { padding-inline-end: 0; }
+  table.t3 thead tr { border-bottom: 1px solid var(--edge); }
+  table.t3 th { border-bottom: 0; }
+  table.t3 th:nth-child(2) { padding-bottom: 4px; }
+  table.t3 td { border-bottom: 0; }
+  table.t3 tbody tr + tr { border-top: 1px solid var(--rule); }
+  table.t3 td:nth-child(2) { padding-bottom: 0; }
+}
+/* 320: the widest bound unit, a sentence's last word, its date and a number chip, needs about 150. */
+@media (width < 23rem) {
+  table.t3 tr { grid-template-columns: calc(var(--t3-name) + 8px) minmax(0, 1fr); }
+  table.t3 :is(th, td):first-child { padding-inline-end: 8px; }
+}
+.tbl { min-width: 0; }
+
+/* The matrix: 1px verticals with 8 either side; the first column holds still. From 48rem it hangs
+   right into the empty margin, to 800, and scrolls inside its region where that margin runs out (§4).
+   Its floor is its own min-content width, which the auto table layout keeps from its columns and
+   their longest unbreakable value and number chip, so no width is typed for one brief's text. */
+/* The last column's focus ring hangs 4 past the cell; 4 of padding, cancelled by an equal negative
+   margin, holds it inside the scroller, so the matrix scrolls only when it must. */
+.mx { padding-inline-end: 4px; margin-inline-end: -4px; }
+.matrix td + td { border-inline-start: 1px solid var(--rule); }
+.matrix :is(th, td) + :is(th, td) { padding-inline: 7px; } /* 7, not R's 8: the value units need 810 at 8 (M) */
+.matrix :is(th, td):first-child { position: sticky; inset-inline-start: 0; z-index: 1; padding-inline-end: 7px; background-color: var(--ground); }
+.matrix :is(th, td):last-child { padding-inline-end: 0; }
+.matrix td:first-child { box-shadow: inset -1px 0 0 var(--rule); }
+.matrix td:first-child + td { border-inline-start: 0; }
+.matrix .mx-unk { color: var(--muted); } /* an Unknown cell: a finding, set apart from a cited No (provenance rules 2, 3) */
+@media (width >= 48rem) {
+  .tbl--mx { width: min(800px, 50cqw + var(--col) / 2 - var(--pad) - var(--shift)); max-width: none; justify-self: start; }
+}
+.scroller { position: relative; overflow-x: auto; overscroll-behavior-x: contain; } /* contains the cells' absolute .sr-only names */
+.mx.scroller { scroll-padding-inline: var(--mx-c0, 0px) 4px; } /* 36 R5: a focused cell scrolls clear of the sticky
+   first column, --mx-c0, measured per page; 36-2 N1: and clear of the right edge by the last column's 4px focus ring,
+   inside .mx's 4 of end padding */
+.scroller::-webkit-scrollbar { height: 10px; }
+.scroller::-webkit-scrollbar-track { background: transparent; }
+.scroller::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 999px; }
+.scroller::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+@supports not selector(::-webkit-scrollbar) { .scroller { scrollbar-width: thin; scrollbar-color: var(--rule) transparent; } }
+@property --fade { syntax: "<length>"; inherits: false; initial-value: 24px; }
+@keyframes vs-fade { from { --fade: 24px; } to { --fade: 0px; } }
+@supports (animation-timeline: scroll()) {
+  @media screen and (width < 48rem) {
+    .mx { mask-image: linear-gradient(to left, transparent, black var(--fade)); animation: vs-fade linear both; animation-timeline: scroll(self inline); }
+  }
+}
+
+/* §8 Chips: the source's number after the closing punctuation, no space ("text.[1]"). A 16 box raised
+   2 sits inside the 28 pitch, and the 23 below 30rem. The .cite__n in a matrix cell shares the look. */
+:is(.chip, .cite__n) {
+  display: inline-block; position: relative; top: -2px; vertical-align: baseline; min-width: 16px;
+  padding: 0 4px; border: 0; border-radius: 4px; text-align: center; white-space: nowrap;
+  font: 500 var(--fs-chip)/var(--lh-chip) var(--sans); letter-spacing: 0;
+  color: var(--muted); background-color: var(--wash); box-shadow: inset 0 0 0 1px var(--rule);
+}
+.chip { margin-inline-start: 2px; cursor: pointer; touch-action: manipulation; }
+/* Plex's U+2009 is 1.4px at 12, too narrow to part two numbers, so its span widens it to 5.4. */
+.n-sep { margin-inline: 2px; }
+/* A coarse pointer's hit area grows to 24 wide and the line pitch tall, so neighbours never overlap. */
+@media (pointer: coarse) {
+  .chip::after { content: ""; position: absolute; left: 50%; top: 50%; width: max(100%, 24px); height: var(--lh-body); translate: -50% -50%; }
+}
+/* §9 Cells: the whole value cell is the trigger (US:millionco/interactive-hit-areas); the .cite's
+   ::after covers the cell, padding included. The number joins its value with a no-break space. */
+.matrix td:has(> .cite) { position: relative; transition: background-color 120ms var(--ease-out); }
+.cite {
+  display: inline; padding: 0; margin: 0; border: 0; background-color: transparent; font: inherit; color: var(--text);
+  text-align: start; cursor: pointer; touch-action: manipulation;
+}
+.cite::after { content: ""; position: absolute; inset: 0; }
+:is(.chip, .cite):focus-visible { border-radius: 4px; }
+.q2__co:focus-visible { border-radius: 6px; }
+/* Open (the card beside its trigger is showing) looks as hover. */
+:is(.chip, .q2__co):has(+ .card:popover-open) { color: var(--text); background-color: var(--rule); }
+.matrix td:has(> .card:popover-open) { background-color: var(--wash); }
+.cite:has(+ .card:popover-open) .cite__n { color: var(--text); background-color: var(--rule); }
+@media (hover: hover) and (pointer: fine) {
+  :is(.chip, .cite__n, .q2__co) { transition: color 120ms var(--ease-out), background-color 120ms var(--ease-out); }
+  :is(.chip, .q2__co):hover { color: var(--text); background-color: var(--rule); }
+  .matrix td:has(> .cite:hover) { background-color: var(--wash); }
+  .cite:hover .cite__n { color: var(--text); background-color: var(--rule); }
+}
+@media (forced-colors: active) { :is(.chip, .cite__n) { border: 1px solid ButtonText; } }
+
+/* §9 Cards: a 320 surface lifted by shadow, set explicitly so it never inherits from a th,
+   strong or .nw it sits in. §10: anchored below its trigger from 40rem; docked at the bottom below 48rem
+   or 30rem tall, which covers 200% zoom (31 R3). A corner trigger needs the double flip (31 R1). */
+.card {
+  position: fixed; inset: auto; margin: 0; width: min(320px, 100vw - 32px); max-height: min(60dvh, 480px);
+  overflow-y: auto; overscroll-behavior: contain; padding: 12px 16px; border: 0; border-radius: 8px;
+  background-color: var(--ground); color: var(--text); box-shadow: var(--shadow-card);
+  font: 400 var(--fs-small)/20px var(--sans); letter-spacing: 0;
+  white-space: normal; text-align: start; text-wrap: pretty; overflow-wrap: break-word; hyphens: manual;
+  opacity: 0; pointer-events: none; /* a closing card never catches the pointer: WebKit can leave it in the cell */
+  transition: opacity 100ms var(--ease-out), overlay 100ms allow-discrete, display 100ms allow-discrete;
+}
+.card:popover-open {
+  opacity: 1; pointer-events: auto;
+  transition: opacity 125ms var(--ease-out), overlay 125ms allow-discrete, display 125ms allow-discrete;
+}
+@starting-style { .card:popover-open { opacity: 0; } }
+.card[data-warm]:popover-open { transition: none; } /* a neighbour opened while one was warm */
+.card::backdrop { background: transparent; }
+@media (width >= 40rem) {
+  .card { top: anchor(bottom); left: anchor(left); margin: 6px 0 0;
+          position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; max-height: min(45dvh, 480px); }
+}
+/* The dock query. The hover script's docked() repeats it and 40 §8's beside rule is its complement,
+   so change all three together. */
+@media (width < 48rem), (height < 30rem) {
+  .card { inset: auto 16px calc(16px + env(safe-area-inset-bottom, 0px)) 16px; width: auto; margin: 0;
+          max-height: min(60dvh, 480px); }
+}
+@supports not (anchor-name: --a) {
+  .card { inset: auto 16px calc(16px + env(safe-area-inset-bottom, 0px)) 16px; width: auto; margin: 0; }
+}
+/* 40 §8 (RT-5, OC-1): where cards anchor, a map card sits beside its logo, top level with the logo's
+   box and 6 from its right edge (12 from the ink, as below), flipping left first. The query is the
+   exact complement of the dock query, and the guard keeps the no-anchor fallback docked. */
+@media (width >= 48rem) and (height >= 30rem) { @supports (anchor-name: --a) {
+  .q2 .card { top: anchor(top); left: anchor(right); margin: 0 0 0 6px;
+              position-try-fallbacks: flip-inline, flip-block, flip-block flip-inline; }
+} }
+@media (forced-colors: active) { .card { border: 1px solid CanvasText; } }
+.card :is(.card__co, .card__src, .card__grp, .card__ans, .card__label, .card__meta, .card__quote, .card__para) { display: block; }
+.card__co { margin-bottom: 8px; font-size: var(--fs-ui); line-height: 20px; font-weight: 500; } /* 31 Rec 1 */
+.card__src + .card__src { margin-top: 12px; }
+.card__grp + .card__grp { margin-top: 16px; } /* between groups beats within one */
+.card__ans + .card__src { margin-top: 4px; }
+.card__ans { font-weight: 500; color: var(--muted); }
+.card__label { font-size: var(--fs-ui); line-height: 20px; font-weight: 500; color: var(--text); }
+.card__meta { margin-top: 2px; color: var(--muted); } /* the domain lives here now (RS-5) */
+/* §10 Evidence, always present: the quote in curly quotes, or a --muted lead-in and a paraphrase. */
+.card__quote, .card__para { margin-top: 6px; color: var(--text); }
+.card__lead { color: var(--muted); }
+.pn { display: none; }
+/* No popover support: the chip hides and the card sets inline as "(label, label)". */
+@supports not selector(:popover-open) {
+  .chip { display: none; }
+  .card { position: static; display: inline; padding: 0; box-shadow: none; background: none; width: auto;
+    max-height: none; opacity: 1; font: inherit; color: inherit; }
+  .card::before { content: " ("; }
+  .card::after { content: ")"; }
+  .card :is(.card__src, .card__grp, .card__label) { display: inline; font: inherit; }
+  .card :is(.card__src, .card__grp) + :is(.card__src, .card__grp)::before { content: ", "; }
+  .card :is(.card__meta, .card__quote, .card__para, .card__ans) { display: none; }
+  .cite__n { display: none; }
+}
+
+/* §11 The map: a real table, its categories labelled directly in the headers, logos in the cells.
+   The cross is its only structure. */
+.q2 { --A: 1800; }
+.q2__t { table-layout: fixed; width: 100%; border-collapse: collapse; }
+.q2__t :is(th, td) { padding: 0; border: 0; vertical-align: top; text-align: start; font-weight: 400; }
+.q2__c0 { width: var(--q2-c0, auto); } /* measured per page: each row header sets in two lines broken at its middle word, plus 12 of padding */
+.q2__wm { display: block; font-size: var(--fs-ui); line-height: 24px; font-weight: 600; text-align: start; text-wrap: balance; } /* a company with no gated logo: its name, wrapping between words,
+   set from the cell's start like the logos (a button centres by default) */
+.q2__t :is(.q2__ch, .q2__rh) { font-size: var(--fs-ui); line-height: 20px; font-weight: 500; color: var(--text); text-wrap: pretty; }
+.q2__t .q2__ch { vertical-align: bottom; padding: 0 0 8px 16px; }
+/* A row header's cap top starts 16 below the cell top, where the first logo's ink starts. */
+.q2__t .q2__rh { padding: 16px 12px 0 0; text-box: trim-both cap alphabetic; text-wrap: wrap; } /* W6: --q2-c0 holds the
+   longer half, so a greedy wrap sets two lines in every engine; WebKit's pretty set three. Chrome's pretty broke as greedy does */
+.q2__t .q2__cell { padding: 16px 16px 20px; }
+.q2__t :is(.q2__cell--tr, .q2__cell--br) { border-inline-start: 1px solid var(--edge); }
+.q2__t :is(.q2__cell--bl, .q2__cell--br) { border-block-start: 1px solid var(--edge); }
+.q2__cos { display: grid; justify-items: start; gap: 12px; } /* 12 of ink: hit boxes touch, never overlap */
+.q2__ent { display: flex; align-items: center; }
+/* §13 The logo is the trigger: 6 of padding hung outside the ink, so the fill has room at rest. */
+.q2__co {
+  display: flex; align-items: center; min-height: 24px; padding: 6px; margin: -6px; border: 0; border-radius: 6px;
+  background-color: transparent; color: var(--text); cursor: pointer; touch-action: manipulation;
+}
+@media (pointer: coarse) { .q2__co { min-height: 32px; } }
+/* Equal ink, damped: height = sqrt(A x k / aspect) x trim, and CSS does the arithmetic. */
+.q2__logo {
+  --h: calc(sqrt(var(--A) * var(--k) / var(--ar)) * var(--trim) * 1px);
+  display: block; position: relative; height: var(--h); width: calc(var(--h) * var(--ar));
+}
+.q2__mono {
+  position: absolute; inset: 0; background-color: currentColor;
+  -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat;
+  print-color-adjust: exact; -webkit-print-color-adjust: exact;
+}
+/* Below 40rem each row is a two-column grid: its header runs full width above its pair. The build
+   sets ARIA table roles, so a cell still reads its column and row headers. */
+@media (width < 40rem) {
+  .q2 { --A: 1200; }
+  .q2__t, .q2__t :is(thead, tbody) { display: block; }
+  .q2__t tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .q2__t :is(colgroup, .q2__corner) { display: none; }
+  .q2__t .q2__rh { grid-column: 1 / -1; padding: 12px 0 4px 12px; }
+  .q2__t .q2__ch { padding-inline-start: 12px; }
+  .q2__t .q2__cell { padding: 12px 12px 16px; }
+  .q2__t .q2__cell--bl { border-block-start: 0; }
+  .q2__t .q2__cell--br { border-block-start: 0; }
+  .q2__t tr:last-child .q2__rh { border-block-start: 1px solid var(--edge); }
+}
+@media (width < 23rem) {
+  .q2__t .q2__ch { padding-inline-start: 8px; }
+  .q2__t .q2__rh { padding: 8px 0 4px 8px; }
+  .q2__t .q2__cell { padding: 8px 8px 12px; }
+}
+
+/* §15 "Also built by Ryan": an h2 and two body paragraphs, the page's own pattern. */
+.psrc { display: none; }
+
+/* §13b Footer, ITL's spacing to the pixel (33§2): 128 to the rule, 32 to the first cap, 12 from a
+   baseline to the next cap, 72 from the last baseline to the page end. Every row is cap-trimmed, so
+   each gap is space between inked letters. They sit side by side from 27rem, the first rem step that
+   measures clear. From 48rem on screen they span the wide grid: from the rail's left edge (the
+   column's below 64rem) to the matrix's right edge, the widest table. The width is .tbl--mx's plus
+   the rail and gap before the column; the start margin is the .layout box's. */
+.foot {
+  margin-top: var(--g-foot); padding-top: 32px; padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--rule);
+}
+.foot__sides {
+  display: flex; flex-direction: column; gap: 32px;
+  width: min(100% - 2 * var(--pad), var(--grid-w)); padding-inline-end: var(--end); margin-inline: auto;
+}
+@media screen and (width >= 48rem) {
+  .foot__sides {
+    width: calc(var(--rail) + var(--gap) + min(800px, 50% + var(--col) / 2 - var(--pad) - var(--shift)));
+    padding-inline-end: 0; margin-inline: calc((100% - min(100% - 2 * var(--pad), var(--grid-w))) / 2) 0;
+  }
+}
+@media (width >= 27rem) {
+  .foot__sides { flex-direction: row; justify-content: space-between; align-items: flex-start; column-gap: 72px; }
+  .foot__line--end { text-align: end; }
+}
+.foot__line { display: flex; flex-direction: column; gap: 12px; font-size: var(--fs-foot); line-height: var(--lh-foot); color: var(--muted); }
+.foot__row { display: block; text-box: trim-both cap alphabetic; }
+.foot__line a { position: relative; }
+.foot__line a::after { content: ""; position: absolute; inset-inline: 0; height: 40px; }
+.foot__row:first-child a::after { bottom: 0; }
+.foot__row:last-child a::after { top: 0; }
+
+/* §6 Motion, ITL's values with 33§3's three changes (RS-3). Every link outside the bar keeps its own
+   colour on hover, and only its underline changes: 40 §6 (37 C1) doubles it to 2px and darkens it from
+   --muted to --text, both snapping, since neither engine paints a thickness change smoothly. The bar's
+   links ease their colour with plain ease ("Hover / color change | ease", US:emilkowalski/animate). */
+@media (hover: hover) and (pointer: fine) {
+  :where(a:hover) { text-decoration-thickness: 2px; text-decoration-color: var(--text); }
+  .head__link { transition: color 120ms ease; }
+  .head__link:hover { color: var(--text); }
+  .banner a:hover { text-decoration-color: var(--ground); } /* the doubled underline, light on dark */
+  #contents a:hover { color: var(--text); }
+}
+
+/* §10 Reduced motion: cards open and close at once; the sheet only fades; colour stays. */
+@media (prefers-reduced-motion: reduce) {
+  .card, .card:popover-open { transition: none; }
+  @starting-style { #contents:popover-open { translate: none; } }
+}
+
+/* §14 Print, A4: no bar, chips, cell numbers or cards; the chip's own number raised after each
+   sentence, cell and logo, and a Sources list with every full URL. Body text is black (PT/color). */
+@page { size: A4; margin: 16mm; }
+@media print {
+  :root:root {
+    --text: #000; --ground: #ffffff; --pad: 0px; --rail: 0px; --gap: 0px; --shift: 0px; --end: 0px;
+    --g-head: 36px; --g-title: 16px; --g-sec: 32px; --g-h2p: 12px; --g-h2t: 12px;
+    --g-para: 8px; --g-tbl: 12px; --g-fig: 20px; --g-foot: 24px;
+    print-color-adjust: economy;
+  }
+  .bar, .banner, .skip, #contents, .chip, .cite__n, .card { display: none !important; }
+  .main { padding-top: 0; container-type: normal; }
+  .layout { width: 100%; grid-template-columns: minmax(0, 1fr); padding: 0; }
+  .title, .brief { grid-column: 1; }
+  .brief > ol { padding-inline-start: 24px; } /* a hung marker would sit in the page margin, which prints nothing */
+  body, .run { font-size: 14px; line-height: 20px; }
+  .title h1 { font-size: 24px; line-height: 28px; }
+  .brief h2 { font-size: 16px; line-height: 20px; break-after: avoid; }
+  table, th { font-size: 12px; line-height: 16px; }
+  .q2__t :is(.q2__ch, .q2__rh) { font-size: 12px; line-height: 16px; }
+  .q2__t .q2__rh { text-wrap: balance; } /* 36 Rec 5: "Names a maker as a / customer" left "a" at a line end */
+  /* A cap-trimmed box is shorter than its ink, and a page break through it paints a sliver of heading
+     at the foot of the page before; print boxes hold their ink. */
+  .title h1, .run, .brief h2, .foot__row, .q2__t .q2__rh { text-box: normal; }
+  /* The cell's value and its number run as one line of text, so a number never drops below its cell. */
+  .cite { display: contents; }
+  .cite::after { display: none; }
+  .pn { display: inline; font-variant-position: super; color: var(--muted); white-space: nowrap; }
+  .pn__sep { font-variant-position: normal; font-size: 0.7em; position: relative; top: -0.35em; line-height: 0; }
+  .q2__ent .pn { margin-inline-start: 2px; }
+  .tbl--mx { width: auto; }
+  .matrix { min-width: 0; }
+  .mx { mask-image: none; animation: none; overflow: visible; }
+  tr, .rec, .q2 { break-inside: avoid; }
+  /* 36-3 Rec 4: Chrome keeps break-before: avoid only between siblings. With the footer a cousin of the
+     last source, it fell alone onto page 5; flattening the boxes from .frame to the list makes the last
+     sources its siblings, so the footer takes one with it. Inherited styles still flow through. */
+  .frame, .main, .layout, .brief, .psrc, .psrc__list { display: contents; }
+  .psrc__h { margin-top: var(--g-sec); font-size: 16px; line-height: 20px; font-weight: 600; break-after: avoid; }
+  .psrc__list { list-style: none; font-size: 12px; line-height: 16px; }
+  .psrc__list li { position: relative; padding-inline-start: 28px; break-inside: avoid; }
+  .psrc__list li:first-child { margin-top: 12px; }
+  .psrc__list li + li { margin-top: 6px; }
+  .psrc__n { position: absolute; inset-inline-start: 0; }
+  .psrc__u { display: block; font-size: 11px; line-height: 16px; color: var(--muted); overflow-wrap: anywhere; }
+  .foot { padding-bottom: 0; break-before: avoid; break-inside: avoid; } /* 31 Rec 7 */
+  .foot__line a::after { position: static; height: auto; } /* a 40px hit area past the last line printed a blank page */
+  .foot a[href^="mailto:"]::after { content: " (you@example.com)"; position: static; height: auto; }
+}
+</style>
+<style>
+/* Generated by build/web.py: each logo's --k, --ar, --trim and mask (§13), and the measured widths. */
+/*LOGOCSS*/
+</style>
+</head>
+<body id="top">
+<span id="nt" hidden>opens in a new tab</span>
+<a class="skip" href="#main">Skip to content</a>
+<div class="frame">
+  <!--BANNER{--><aside class="banner" aria-label="About this page">
+    <div class="banner__in"><p class="banner__t"><strong>Example brief.</strong> Run the agent for your company: <!-- SNAPSHOT-EXEMPT (the agent's repo) --><a href="{{REPO}}">install it from GitHub</a><!-- /SNAPSHOT-EXEMPT -->.</p></div>
+  </aside><!--}BANNER-->
+  <header class="bar">
+    <nav class="head" aria-label="Primary">
+      <div class="head__brand">
+        <!-- SNAPSHOT-EXEMPT (the studio mark) -->
+        <a class="head__umbrella" href="https://in-the-loop.studio/"><img class="head__logo" src="in-the-loop-mark.svg" alt="In The Loop" width="18" height="18"></a>
+        <!-- /SNAPSHOT-EXEMPT -->
+        <svg class="head__slash" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false"><path d="M10.5 2.5 5.5 13.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <a class="head__mark" href="#top"><span class="head__wm">Competitor intel</span></a>
+      </div>
+      <div class="head__nav">
+        <button type="button" class="head__link head__toc" popovertarget="contents">Contents</button>
+        <a class="head__link head__mail" href="mailto:you@example.com">Email me<span class="sr-only">, Ryan Hennebry</span></a>
+      </div>
+    </nav>
+  </header>
+  <main class="main" id="main" tabindex="-1">
+    <div class="layout">
+      <header class="title">
+        <!--H1-->
+        <!--RUN-->
+      </header>
+      <nav id="contents" aria-label="Contents" popover><ol><!--CONTENTS--></ol></nav>
+      <article class="brief">
+<!--BRIEF{-->
+<h2>Quick take</h2>
+<!--QUICK-TAKE-->
+<!--MAP-->
+<h2>Recommendations</h2>
+<!--RECOMMENDATIONS-->
+<h2><!--MOVES-HEADING--></h2>
+<!--MOVES-->
+<h2><!--MATRIX-HEADING--></h2>
+<!--MATRIX-->
+<h2>Open questions</h2>
+<!--OPEN-QUESTIONS-->
+<!--}BRIEF-->
+<!-- SNAPSHOT-EXEMPT (Ryan's own projects) -->
+<h2 id="vT-also">Also built by Ryan</h2>
+<p><a href="https://startupskills.dev/">Startup Skills</a> indexes agent skills written by exceptional operators, so your agent can work the way they do.</p>
+<p><a href="https://github.com/ryan-hennebry/growth-experiments">Growth Agent</a> picks your next experiment from your campaign metrics, drafts the copy, and learns from each result.</p>
+<!-- /SNAPSHOT-EXEMPT -->
+<section class="psrc"><h2 class="psrc__h">Sources</h2><ol class="psrc__list"><!--SOURCES--></ol></section>
+
+      </article>
+    </div>
+  </main>
+  <footer class="foot">
+    <!-- SNAPSHOT-EXEMPT (Ryan's own links) -->
+    <div class="foot__sides">
+      <p class="foot__line"><span class="foot__row">Built by <a href="{{LINKEDIN}}">Ryan&nbsp;Hennebry</a>,</span>
+        <span class="foot__row">part of <a href="https://in-the-loop.studio/">In The Loop</a>.</span></p>
+      <p class="foot__line foot__line--end"><span class="foot__row">Made with <a href="{{REPO}}">my agent</a>.</span>
+        <span class="foot__row">To get in touch, <a href="mailto:you@example.com">email me</a>.</span></p>
+    </div>
+    <!-- /SNAPSHOT-EXEMPT -->
+  </footer>
+  <div class="spy-end" aria-hidden="true"></div>
+</div>
+<script>
+(() => {
+  // §17 Scroll-spy: IntersectionObserver only. Current = the last h2 whose top has crossed the line;
+  // Quick take on load; the last item at the page bottom. 26 R1: the line is the entry's own
+  // rootBounds.bottom when it carries one, else 34% down.
+  const contents = document.getElementById("contents");
+  const items = new Map([...contents.querySelectorAll("a")].map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+  const heads = [...document.querySelectorAll("article h2[id]")].filter((h) => items.has(h.id));
+  const lastId = heads[heads.length - 1].id;
+  let atEnd = false;
+  let pin = null; // a clicked item holds until the page moves from where its jump left it
+  const setCurrent = (id) => items.forEach((a, k) => {
+    if (k === id) a.setAttribute("aria-current", "location"); else a.removeAttribute("aria-current");
+  });
+  const update = (entries) => {
+    if (pin && Math.abs(scrollY - pin.y) < 2) return setCurrent(pin.id);
+    pin = null;
+    if (atEnd) return setCurrent(lastId);
+    const rb = entries && entries[0] && entries[0].rootBounds;
+    const line = rb ? rb.bottom : innerHeight * 0.34;
+    let cur = heads[0].id;
+    for (const h of heads) if (h.getBoundingClientRect().top <= line) cur = h.id;
+    setCurrent(cur);
+  };
+  const spy = new IntersectionObserver(update, { rootMargin: "-64px 0px -66% 0px" });
+  heads.forEach((h) => spy.observe(h));
+  document.querySelectorAll(".brief > :not(h2)").forEach((el) => spy.observe(el)); // tripwires for big jumps
+  new IntersectionObserver(([e]) => { atEnd = e.isIntersecting; update(); })
+    .observe(document.querySelector(".spy-end"));
+  setCurrent(heads[0].id);
+  // The native jump is instant; the item is current at once; the sheet closes.
+  contents.addEventListener("click", (e) => {
+    const a = e.target.closest("a");
+    if (!a) return;
+    const id = decodeURIComponent(a.hash.slice(1));
+    setCurrent(id);
+    requestAnimationFrame(() => { pin = { id, y: scrollY }; });
+    if (contents.matches(":popover-open")) contents.hidePopover();
+  });
+  matchMedia("(min-width: 64rem)").addEventListener("change", () => {
+    if (contents.matches(":popover-open")) contents.hidePopover();
+  });
+  // The sheet hangs from the bar's bottom: 64 once the banner has scrolled away, lower while it shows.
+  const bar = document.querySelector(".bar");
+  const sheetTop = () => contents.style.setProperty("--sheet-top", `${Math.max(64, bar.getBoundingClientRect().bottom)}px`);
+  contents.addEventListener("beforetoggle", (e) => { if (e.newState === "open") sheetTop(); });
+  addEventListener("scroll", () => { if (contents.matches(":popover-open")) sheetTop(); }, { passive: true });
+})();
+(() => {
+  // 37 B1-B6: hover intent, mouse only, where cards anchor. Click, tap, Enter, Esc and light dismiss
+  // stay declarative. A safe polygon guards the path from a trigger to its card (FUI safePolygon).
+  // 41 R1: only a pointer move arms a trigger, so a scroll never opens a card, and a warm open waits
+  // until the pointer rests on its trigger, so a path that crosses a trigger never opens it.
+  const TRIG = ".chip, .cite, .q2__co";
+  const OPEN_MS = 300, CLOSE_MS = 300, WARM_MS = 600, REST_MS = 40, MIN_SPEED = 0.1, BUF = 0.5, STILL_MS = 50, STILL_PX = 3;
+  const cardOf = (t) => document.getElementById(t.getAttribute("popovertarget"));
+  // The CSS dock query, repeated: change both together (36 R4).
+  const docked = () => matchMedia("(width < 48rem), (height < 30rem)").matches || !CSS.supports("anchor-name: --a");
+  let openT = 0, closeT = 0, restT = 0, lastClose = -Infinity, hovered = null, pinned = null, transit = null, last = null;
+  let over = null, armed = null; // the trigger under the last move, and the open it waits for: { warm, x, y }
+  const open = (card, warm) => { card.toggleAttribute("data-warm", warm); hovered = card; if (!card.matches(":popover-open")) card.showPopover(); };
+  const scheduleClose = () => {
+    if (!hovered || hovered === pinned) return;
+    const card = hovered; clearTimeout(closeT);
+    closeT = setTimeout(() => { if (card !== pinned && card.matches(":popover-open")) card.hidePopover(); }, CLOSE_MS);
+  };
+  const inPoly = (pts, x, y) => { let inside = false;
+    for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
+      const [xi, yi] = pts[i], [xj, yj] = pts[j];
+      if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
+    } return inside; };
+  const startTransit = (card, trig, x, y) => { // 37 B2; 40 §7 adds the card beside its trigger
+    const t = trig.getBoundingClientRect(), c = card.getBoundingClientRect(); // t: the anchor box, not the cell
+    const k = (trig.closest("td") || trig).getBoundingClientRect(); // k: the trigger's hit box, the whole cell
+    let tri, band; // 41 R1: the band runs from the trigger's far side to the card's near edge, along all of both
+    if (c.left >= t.right - 1 || c.right <= t.left + 1) { // beside: the near edge is the card's facing side
+      const right = c.left >= t.right - 1, ex = right ? c.left + BUF : c.right - BUF, back = right ? -2 : 2;
+      tri = [[x + back, y - 2], [x + back, y + 2], [ex, c.bottom + BUF], [ex, c.top - BUF]];
+      const tp = Math.min(k.top, c.top), bt = Math.max(k.bottom, c.bottom);
+      const [a, b] = right ? [k.left, c.left + 1] : [c.right - 1, k.right];
+      band = [[a, tp], [b, tp], [b, bt], [a, bt]];
+    } else { // above or below: 37's triangle, unchanged
+      const below = c.top + c.bottom > t.top + t.bottom, ey = below ? c.top + BUF : c.bottom - BUF;
+      const back = below ? -2 : 2;
+      tri = [[x - 2, y + back], [x + 2, y + back], [c.right + BUF, ey], [c.left - BUF, ey]];
+      const l = Math.min(k.left, c.left), r = Math.max(k.right, c.right);
+      band = below ? [[l, k.top], [r, k.top], [r, c.top + 1], [l, c.top + 1]]
+                   : [[l, c.bottom - 1], [r, c.bottom - 1], [r, k.bottom], [l, k.bottom]];
+    }
+    transit = { card, tri, band };
+    clearTimeout(restT); restT = setTimeout(endTransit, REST_MS);
+  };
+  const endTransit = () => {
+    clearTimeout(restT); transit = null; if (armed && armed.warm) wait(); // a rest counts from the end of the transit
+    if (last) settle(document.elementFromPoint(last.x, last.y));
+  };
+  const settle = (el) => { // closes only: opening is arm's
+    if (!el) return scheduleClose();
+    const inCard = el.closest(".card");
+    if (inCard) { if (inCard === hovered) clearTimeout(closeT); return; }
+    const t = el.closest(TRIG), card = t && cardOf(t);
+    if (card && (card === hovered || card === pinned)) clearTimeout(closeT); else scheduleClose();
+  };
+  const arm = (t, x, y) => { // a cold open 300ms after the move onto a trigger; a warm one once the pointer rests on it
+    const entered = t !== over; over = t;
+    if (entered) { clearTimeout(openT); armed = null; }
+    const card = t && cardOf(t);
+    if (!card || card === hovered || card === pinned || !(entered || armed)) return;
+    if (armed && (!armed.warm || Math.hypot(x - armed.x, y - armed.y) < STILL_PX)) return;
+    const warm = !!document.querySelector(".card:popover-open") || performance.now() - lastClose < WARM_MS;
+    armed = { card, warm, x, y }; wait();
+  };
+  const wait = () => { // no card opens while the pointer is in transit to the open one
+    const a = armed; clearTimeout(openT);
+    openT = setTimeout(() => { if (transit) return wait(); armed = null; open(a.card, a.warm); }, a.warm ? STILL_MS : OPEN_MS);
+  };
+  document.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse" || docked()) return;
+    const now = performance.now();
+    const speed = last ? Math.hypot(e.clientX - last.x, e.clientY - last.y) / Math.max(1, now - last.t) : Infinity;
+    const moved = !last || e.clientX !== last.x || e.clientY !== last.y; // WebKit moves a still pointer after a scroll
+    last = { x: e.clientX, y: e.clientY, t: now };
+    if (moved) arm(e.target.closest(TRIG), e.clientX, e.clientY);
+    if (!transit) return;
+    if (e.target.closest(".card") === transit.card) return endTransit(); // landed
+    const [x, y] = [e.clientX, e.clientY];
+    if ((inPoly(transit.tri, x, y) || inPoly(transit.band, x, y)) && speed >= MIN_SPEED) {
+      clearTimeout(restT); restT = setTimeout(endTransit, REST_MS); return;
+    }
+    endTransit();
+  });
+  document.addEventListener("pointerover", (e) => {
+    if (e.pointerType !== "mouse" || docked() || transit) return;
+    settle(e.target);
+  });
+  document.addEventListener("pointerout", (e) => {
+    if (e.pointerType !== "mouse" || docked()) return;
+    const from = e.target.closest(TRIG + ", .card");
+    if (!from) return;
+    const card = from.matches(".card") ? from : cardOf(from);
+    const to = e.relatedTarget instanceof Element ? e.relatedTarget : null;
+    const toTrig = to && to.closest(TRIG);
+    if (to && (to.closest(".card") === card || (toTrig && cardOf(toTrig) === card))) return; // within the pair
+    clearTimeout(openT); armed = null; over = null;
+    if (from !== card && card.matches(":popover-open") && (card === hovered || card === pinned)) return startTransit(card, from, e.clientX, e.clientY);
+    if (card === hovered) scheduleClose(); // B3: leaving the card itself
+  });
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest(TRIG), card = t && cardOf(t);
+    if (!card) return;
+    clearTimeout(openT); clearTimeout(closeT);
+    if (!card.matches(":popover-open")) card.removeAttribute("data-warm");
+    pinned = card;
+  });
+  // B4: browsers keep a popover's scroll offset across display: none, and a box-less card ignores
+  // scrollTop, so reset in the open's first frame, before it paints.
+  document.addEventListener("beforetoggle", (e) => {
+    const c = e.target;
+    if (c instanceof Element && c.classList.contains("card") && e.newState === "open") requestAnimationFrame(() => { c.scrollTop = 0; });
+  }, true);
+  document.addEventListener("toggle", (e) => {
+    const c = e.target;
+    if (!(c instanceof Element) || !c.classList.contains("card") || e.newState !== "closed") return;
+    lastClose = performance.now();
+    if (c === pinned) pinned = null;
+    if (c === hovered) hovered = null;
+    if (transit && transit.card === c) transit = null;
+  }, true);
+})();
+(() => {
+  // 36-2 N1: Chrome does not scroll a focused cell that is already partly visible, so with R5's start
+  // padding the next cell can stay cut at the right edge. Bring every focus outside a card fully in,
+  // by its whole cell: the button alone leaves its 4px focus ring and the cell's padding cut. Keyboard
+  // focus only: a click's focus would scroll the page between press and release and lose the click.
+  document.querySelector(".mx.scroller").addEventListener("focusin", (e) => {
+    if (e.target.closest(".card") || !e.target.matches(":focus-visible")) return;
+    (e.target.closest("td") || e.target).scrollIntoView({ block: "nearest", inline: "nearest" });
+  });
+})();
+</script>
+</body>
+</html>

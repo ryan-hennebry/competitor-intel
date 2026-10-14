@@ -1,0 +1,46 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/span-verdicts.schema.json",
+ "title": "span-verify's read",
+ "description": "One PASS or FAIL per span span-verify was given. Code writes each to verify.jsonl at the span's hash.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "spans"
+ ],
+ "properties": {
+  "spans": {
+   "type": "array",
+   "items": {
+    "$ref": "#/$defs/span_verdict"
+   }
+  }
+ },
+ "$defs": {
+  "span_verdict": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "span_id",
+    "verdict",
+    "note"
+   ],
+   "properties": {
+    "span_id": {
+     "type": "string",
+     "pattern": "^[a-z]+([.][a-z_]+|[.][0-9]+)+$"
+    },
+    "verdict": {
+     "enum": [
+      "PASS",
+      "FAIL"
+     ]
+    },
+    "note": {
+     "type": "string",
+     "description": "Why, in one line; the row or clause that fails it on a FAIL."
+    }
+   }
+  }
+ }
+}

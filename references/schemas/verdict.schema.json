@@ -1,0 +1,250 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/verdict.schema.json",
+ "title": "One screener verdict",
+ "description": "A screener's verdict on one candidate or page line, passed to claude -p --json-schema verbatim from c2's prototype. pass is true, false, or null where the test does not apply; quote is the clause the verdict rests on, which a repair rewrites.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "item",
+  "NEW",
+  "TRUE",
+  "DECISION",
+  "ROLE",
+  "STANCE",
+  "SPEAKER",
+  "FEASIBILITY",
+  "HOLDS"
+ ],
+ "properties": {
+  "item": {
+   "type": "string"
+  },
+  "NEW": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "quote",
+    "why"
+   ],
+   "properties": {
+    "pass": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "quote": {
+     "type": "string"
+    },
+    "why": {
+     "type": "string"
+    }
+   }
+  },
+  "TRUE": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "quote",
+    "why"
+   ],
+   "properties": {
+    "pass": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "quote": {
+     "type": "string"
+    },
+    "why": {
+     "type": "string"
+    }
+   }
+  },
+  "DECISION": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "strength",
+    "quote",
+    "why"
+   ],
+   "properties": {
+    "pass": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "strength": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 0,
+     "maximum": 3
+    },
+    "quote": {
+     "type": "string"
+    },
+    "why": {
+     "type": "string"
+    }
+   }
+  },
+  "ROLE": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "lines",
+    "seat",
+    "quote",
+    "why"
+   ],
+   "properties": {
+    "pass": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "lines": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "seat": {
+     "type": "boolean"
+    },
+    "quote": {
+     "type": "string"
+    },
+    "why": {
+     "type": "string"
+    }
+   }
+  },
+  "STANCE": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "value",
+    "positioning",
+    "quote",
+    "why"
+   ],
+   "properties": {
+    "pass": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "value": {
+     "enum": [
+      "builds_on",
+      "neutral",
+      "threat",
+      "negates"
+     ]
+    },
+    "positioning": {
+     "type": "string"
+    },
+    "quote": {
+     "type": "string"
+    },
+    "why": {
+     "type": "string"
+    }
+   }
+  },
+  "SPEAKER": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "kind",
+    "quote",
+    "why"
+   ],
+   "properties": {
+    "pass": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "kind": {
+     "enum": [
+      "none",
+      "verdict",
+      "recital",
+      "directive"
+     ]
+    },
+    "quote": {
+     "type": "string"
+    },
+    "why": {
+     "type": "string"
+    }
+   }
+  },
+  "FEASIBILITY": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "quote",
+    "why"
+   ],
+   "properties": {
+    "pass": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "quote": {
+     "type": "string"
+    },
+    "why": {
+     "type": "string"
+    }
+   }
+  },
+  "HOLDS": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "pass",
+    "quote",
+    "why"
+   ],
+   "properties": {
+    "pass": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "quote": {
+     "type": "string"
+    },
+    "why": {
+     "type": "string"
+    }
+   }
+  }
+ }
+}

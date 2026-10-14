@@ -1,0 +1,57 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/reader.schema.json",
+ "title": "reader.json",
+ "description": "The reader node's typed frame of the founder who reads the page: who they are, what the posting asks of the hire, what the company says about itself, and what the founder already knows. The lock, the screeners and rank read it; code sets recipient.confidence and seeds constraints from rulings.tsv.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["company", "role", "recipient", "duties", "positioning", "constraints", "known_hosts", "known_summary"],
+ "properties": {
+  "company": {"type": "object", "additionalProperties": false, "required": ["name", "domain", "hosts"],
+   "properties": {
+    "name": {"type": "string", "minLength": 1, "description": "Verbatim, as on the company's own site."},
+    "domain": {"$ref": "#/$defs/host", "description": "The registrable domain; a row on it or a subdomain is known."},
+    "hosts": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/host"}, "description": "Every host of the company's own pages the run fetched."}}},
+  "role": {"type": "object", "additionalProperties": false, "required": ["title", "jd_url", "kind"],
+   "properties": {
+    "title": {"type": "string", "minLength": 1, "description": "Verbatim from the job ad."},
+    "jd_url": {"type": "string", "pattern": "^https?://"},
+    "kind": {"$ref": "#/$defs/slug", "description": "The seat's family, the title's slug before any ' - ' qualifier."}}},
+  "recipient": {"type": "object", "additionalProperties": false,
+   "required": ["name", "title", "confidence", "source", "conflict", "conflict_note", "writing", "taste_model"],
+   "properties": {
+    "name": {"type": ["string", "null"], "minLength": 1, "description": "null when confidence is unresolved; the page then addresses the title."},
+    "title": {"type": "string", "minLength": 1},
+    "confidence": {"enum": ["high", "medium", "low", "unresolved"], "description": "Set by code from the source rows' states and hosts (c2 § 7)."},
+    "source": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/claim_id"}},
+    "conflict": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/claim_id"}},
+    "conflict_note": {"type": ["string", "null"]},
+    "writing": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/claim_id"}, "description": "Rows citing the recipient's own public writing."},
+    "taste_model": {"enum": ["generic", "founder"], "description": "generic when writing is empty: the card runs unmodified and the check-in flags it."}}},
+  "duties": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["line", "weight", "kind", "text"],
+   "properties": {
+    "line": {"type": "string", "pattern": "^L[0-9]+$", "description": "The line of the job ad's capture the text sits on."},
+    "weight": {"enum": [1, 2, 3], "description": "From the posting's own headings: 3 a duty bullet, 2 the role framing, 1 a requirement."},
+    "kind": {"enum": ["duty", "framing", "requirement"]},
+    "text": {"type": "string", "minLength": 1, "description": "Verbatim from the job ad."}}}},
+  "positioning": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["id", "text", "source", "voice"],
+   "properties": {
+    "id": {"type": "string", "pattern": "^P[0-9]+$"},
+    "text": {"type": "string", "minLength": 1, "description": "The company's or founder's own line, verbatim."},
+    "source": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/claim_id"}},
+    "voice": {"enum": ["company", "founder"]}}}},
+  "constraints": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["id", "text", "ruling"],
+   "properties": {
+    "id": {"type": "string", "pattern": "^K[0-9]+$"},
+    "text": {"type": "string", "minLength": 1},
+    "ruling": {"type": ["string", "null"], "minLength": 1, "description": "The rulings.tsv id the constraint is seeded from; null for one the run's own rows state."}}}},
+  "known_hosts": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/host"},
+   "description": "Hosts matched exactly when code sets a claim row's known: the company's hosts and the job ad's host. A shared platform host (a Notion or ATS site) stays exact, never a suffix."},
+  "known_summary": {"type": "string", "minLength": 1, "description": "What the founder already holds, in one paragraph."}
+ },
+ "$defs": {
+  "claim_id": {"type": "string", "pattern": "^C-[0-9]{3,}$"},
+  "slug": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"},
+  "host": {"type": "string", "pattern": "^[a-z0-9]+([.-][a-z0-9]+)*[.][a-z]{2,}$"}
+ }
+}

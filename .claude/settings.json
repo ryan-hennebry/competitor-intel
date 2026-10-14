@@ -1,0 +1,29 @@
+{
+  "worktree": {
+    "baseRef": "head"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "TaskOutput",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/deny-taskoutput.sh\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "Bash|Write|Edit|MultiEdit|NotebookEdit|WebFetch|TaskOutput",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test ! -f \"$CLAUDE_PROJECT_DIR/tools/hooks/run_guard.py\" || python3 \"$CLAUDE_PROJECT_DIR/tools/hooks/run_guard.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

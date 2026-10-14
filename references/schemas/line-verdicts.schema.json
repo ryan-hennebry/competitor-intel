@@ -1,0 +1,205 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/line-verdicts.schema.json",
+ "title": "A founder critic's line verdicts",
+ "description": "One screener's verdicts on every authored line, tools/line-screen.py line_schema() as a file for the runner (back-lane.py --selftest holds the two equal). Code takes the majority of three per line and test.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "verdicts"
+ ],
+ "properties": {
+  "verdicts": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "item",
+     "NEW",
+     "TRUE",
+     "ROLE",
+     "STANCE",
+     "SPEAKER",
+     "CONSEQUENCE"
+    ],
+    "properties": {
+     "item": {
+      "type": "string"
+     },
+     "NEW": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "pass",
+       "quote",
+       "why"
+      ],
+      "properties": {
+       "pass": {
+        "type": [
+         "boolean",
+         "null"
+        ]
+       },
+       "quote": {
+        "type": "string"
+       },
+       "why": {
+        "type": "string"
+       }
+      }
+     },
+     "TRUE": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "pass",
+       "quote",
+       "why"
+      ],
+      "properties": {
+       "pass": {
+        "type": [
+         "boolean",
+         "null"
+        ]
+       },
+       "quote": {
+        "type": "string"
+       },
+       "why": {
+        "type": "string"
+       }
+      }
+     },
+     "ROLE": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "pass",
+       "lines",
+       "seat",
+       "quote",
+       "why"
+      ],
+      "properties": {
+       "pass": {
+        "type": [
+         "boolean",
+         "null"
+        ]
+       },
+       "lines": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "seat": {
+        "type": "boolean"
+       },
+       "quote": {
+        "type": "string"
+       },
+       "why": {
+        "type": "string"
+       }
+      }
+     },
+     "STANCE": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "pass",
+       "value",
+       "positioning",
+       "quote",
+       "why"
+      ],
+      "properties": {
+       "pass": {
+        "type": [
+         "boolean",
+         "null"
+        ]
+       },
+       "value": {
+        "enum": [
+         "builds_on",
+         "neutral",
+         "threat",
+         "negates"
+        ]
+       },
+       "positioning": {
+        "type": "string"
+       },
+       "quote": {
+        "type": "string"
+       },
+       "why": {
+        "type": "string"
+       }
+      }
+     },
+     "SPEAKER": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "pass",
+       "kind",
+       "quote",
+       "why"
+      ],
+      "properties": {
+       "pass": {
+        "type": [
+         "boolean",
+         "null"
+        ]
+       },
+       "kind": {
+        "enum": [
+         "none",
+         "verdict",
+         "recital",
+         "directive"
+        ]
+       },
+       "quote": {
+        "type": "string"
+       },
+       "why": {
+        "type": "string"
+       }
+      }
+     },
+     "CONSEQUENCE": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "pass",
+       "quote",
+       "why"
+      ],
+      "properties": {
+       "pass": {
+        "type": [
+         "boolean",
+         "null"
+        ]
+       },
+       "quote": {
+        "type": "string"
+       },
+       "why": {
+        "type": "string"
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

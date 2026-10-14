@@ -1,0 +1,21 @@
+# illustrative-file: D-013 a corpus of defects measured in delivered briefs, one row per instance; the compound step appends and never edits, and no row is a rule
+# Every defect that reached the text of a real brief, one row each. The compound step appends after
+# delivery or after the operator's feedback, whichever comes last, and never edits a row.
+# Columns: run / sentence / rule_id / caught_by / stage / outcome
+#   caught_by  rule = an existing rule fired. critic = a critic's judgement, no rule existed.
+#              escaped = nothing caught it and the operator found it. escaped is the priority class.
+#   outcome    fixed, booked, or the decision entry that retired the argument.
+# The rows below are the Northwind run, back-filled from 21-voice-audit.md so the first compound step has
+# a baseline to increment rather than an empty file.
+run	sentence	rule_id	caught_by	stage	outcome
+northwind-2026-09-14	No heat pump on its integrations page or on 22 pages fetched.	process_subject	critic	voice audit	fixed, and the bound kept
+northwind-2026-09-14	Northwind's proposition, Northwind's market, eleven days before this brief.	process_subject	critic	voice audit	fixed; the register pass had booked it a severity lower
+northwind-2026-09-14	The regulatory explainers that would prove the thesis are reachable only by crawling fourteen homepage links	process_subject	critic	voice audit	fixed
+northwind-2026-09-14	rest on pages that answered and did not carry the claim, never on a 404	process_subject	critic	voice audit	fixed; the register pass read it and objected to a different noun
+northwind-2026-09-14	so no revenue figure is given for it	doc_passive	critic	voice audit	fixed; the same shape had already been booked once and shipped again in new words
+northwind-2026-09-14	Sixteen pages and twenty-eight posts on northwind.example never say so.	count_subject	critic	voice audit	fixed; D-004 adds the rule
+northwind-2026-09-14	Twelve consecutive Recommendations sentences, none under 11 words	R1	critic	voice audit	fixed; advisory signal, D-003
+northwind-2026-09-14	Same supplier-agnostic argument on 2 Apr 2026, as gridX and ev.energy do.	dup_row_date	critic	voice audit	fixed
+northwind-2026-09-14	Northwind sells to whoever already owns the asset in the home.	P1	critic	voice audit	fixed; the one non-finding in a claim-header
+northwind-2026-09-14	Yes, and it holds the market position for the carmaker path	RF2	critic	voice audit	fixed; the only cell that flatters the reader
+northwind-2026-09-14	Claimed, unevidenced	P7	critic	voice audit	booked, not fixed; grading vocabulary in a matrix cell

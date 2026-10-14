@@ -1,0 +1,29 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/questions.schema.json",
+ "title": "questions.json",
+ "description": "The questions node's output: the questions the research answers, the selection axes, and every parked candidate question as a seed the lock must cover or give a reason against.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["questions", "axes", "seeds"],
+ "properties": {
+  "questions": {"type": "array", "minItems": 3, "items": {"type": "object", "additionalProperties": false,
+   "required": ["id", "text", "topic", "serves", "changes", "closed_list"],
+   "properties": {
+    "id": {"type": "string", "pattern": "^Q[1-9][0-9]*$"},
+    "text": {"type": "string", "minLength": 1},
+    "topic": {"$ref": "#/$defs/slug", "description": "One word for what the question asks about; buyer routes the mkt1 node."},
+    "serves": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^(L|P)[0-9]+$"},
+     "description": "The reader.json duty lines (L<n>) and positioning lines (P<n>) the answer serves."},
+    "changes": {"type": "string", "minLength": 1, "description": "The decision each answer moves, and which way."},
+    "closed_list": {"type": ["string", "null"], "minLength": 1, "description": "The closed list an absence is read off; null when the question is presence only."}}}},
+  "axes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}, "description": "The selection axes, in order."},
+  "seeds": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["text", "why_parked"],
+   "properties": {
+    "text": {"type": "string", "minLength": 1},
+    "why_parked": {"type": "string", "minLength": 1}}}}
+ },
+ "$defs": {
+  "slug": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"}
+ }
+}

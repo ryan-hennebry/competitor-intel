@@ -1,0 +1,66 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/candidates.schema.json",
+ "title": "candidates.json",
+ "description": "The lock node's thesis candidates (c2 § 2). Every id is a claims.jsonl row or a reader.json line. Prose fields carry no tags and no IDs: provenance lives in the typed fields, and the page renders quotes and caveats from the rows.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["candidates"],
+ "properties": {
+  "candidates": {"$ref": "#/$defs/candidates"}
+ },
+ "$defs": {
+  "candidates": {"type": "array", "minItems": 3, "maxItems": 4, "items": {"$ref": "#/$defs/candidate"},
+   "description": "3 or 4, so three screeners each fit one wave under the runner's 12-process cap."},
+  "claim_id": {"type": "string", "pattern": "^C-[0-9]{3,}$"},
+  "from": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^(C-[0-9]{3,}|I[0-9]+)$"},
+   "description": "Claim rows and inference ids the text rests on."},
+  "candidate": {"type": "object", "additionalProperties": false,
+   "required": ["id", "headline", "thesis", "subject", "evidence", "inference", "implication", "advice", "duties", "decision", "stance", "holds", "case_against"],
+   "properties": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$"},
+    "headline": {"type": "string", "minLength": 1, "x-maxWords": 14, "description": "The page-top lede as it will print."},
+    "thesis": {"type": "string", "minLength": 1, "x-maxWords": 45, "description": "One sentence, no tags, no IDs."},
+    "subject": {"type": "string", "minLength": 1, "description": "The grammatical subject's company name, verbatim from names.json."},
+    "evidence": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["id", "use", "known"],
+     "properties": {
+      "id": {"$ref": "#/$defs/claim_id"},
+      "use": {"enum": ["main", "contrast", "advice", "holds"], "description": "main carries the news in the main clause; contrast is the client-side comparison; advice backs the advice; holds backs the holds slot."},
+      "known": {"type": "boolean", "description": "Copied by code from the row's known."}}}},
+    "inference": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["id", "text", "from"],
+     "properties": {
+      "id": {"type": "string", "pattern": "^I[0-9]+$"},
+      "text": {"type": "string", "minLength": 1},
+      "from": {"$ref": "#/$defs/from"}}}},
+    "implication": {"type": "object", "additionalProperties": false, "required": ["text", "from"],
+     "properties": {
+      "text": {"type": "string", "minLength": 1, "description": "What it means for the company, one clause."},
+      "from": {"$ref": "#/$defs/from"}}},
+    "advice": {"type": "object", "additionalProperties": false, "required": ["text", "first_instance", "depends_on", "fallback"],
+     "properties": {
+      "text": {"type": "string", "minLength": 1, "description": "The move, phrased as the hire's work."},
+      "first_instance": {"type": ["string", "null"], "description": "The one named first case the move starts with."},
+      "depends_on": {"type": "array", "items": {"type": "string", "pattern": "^(C-[0-9]{3,}|K[0-9]+)$"}, "description": "Claim rows or reader.json constraints the move needs true or granted."},
+      "fallback": {"type": ["string", "null"], "description": "The path that works when a depends_on item fails."}}},
+    "duties": {"type": "array", "items": {"type": "string", "pattern": "^L[0-9]+$"}, "description": "The builder's declared reader.json duty lines; the screener re-judges every line."},
+    "decision": {"type": "object", "additionalProperties": false, "required": ["cite", "text"],
+     "properties": {
+      "cite": {"type": "string", "pattern": "^(Q[1-9][0-9]*|02-questions[.]md:[0-9]+)$", "description": "The questions.json id, or a 02-questions.md line on a run before questions.json."},
+      "text": {"type": "string", "minLength": 1}}},
+    "stance": {"type": "object", "additionalProperties": false, "required": ["positioning", "declared"],
+     "properties": {
+      "positioning": {"type": "string", "pattern": "^P[0-9]+$"},
+      "declared": {"enum": ["builds_on", "neutral", "threat", "negates", null], "description": "The builder's claim, never evidence."}}},
+    "holds": {"type": ["object", "null"], "additionalProperties": false, "required": ["text", "from"],
+     "description": "Where the client holds against the rivals; it ranks and never kills.",
+     "properties": {
+      "text": {"type": "string", "minLength": 1},
+      "from": {"$ref": "#/$defs/from"}}},
+    "case_against": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["text", "tag", "advice_depends"],
+     "properties": {
+      "text": {"type": "string", "minLength": 1},
+      "tag": {"enum": ["Unknown", "INFERRED", "COMPANY CLAIM", "company-stated", "VERIFIED"]},
+      "advice_depends": {"type": "boolean"}}}}
+   }}
+ }
+}

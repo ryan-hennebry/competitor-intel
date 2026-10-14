@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="96 88 336 336">
+  <!-- Variant P's tab icon: the In The Loop mark's dot and loop (in-the-loop-mark.svg, the same
+       paths as in-the-loop-skills/public/brand), without its grey square, in P's text colour for
+       each scheme. XML forbids a double hyphen inside a comment. -->
+  <style>
+    svg { color: #17191b; }
+    @media (prefers-color-scheme: dark) { svg { color: #f2f5f8; } }
+  </style>
+  <path fill="currentColor" d="M204 192c36 0 63 26 63 62 0 37-26 62-63 62-36 0-61-26-61-62 0-34 25-60 61-62Z"/>
+  <path d="M260 120C390 138 390 371 262 388" fill="none" stroke="currentColor" stroke-width="50" stroke-linecap="round"/>
+</svg>

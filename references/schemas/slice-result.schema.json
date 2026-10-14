@@ -1,0 +1,44 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/slice-result.schema.json",
+ "title": "slice-result",
+ "description": "A slice-builder's final answer (design.md M39), passed to `claude -p --json-schema` by tools/build.py. build.py and land.py add the measured fields (attempt, land_exit, landed, cost) to result.json; the builder reports only what it did.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["slice", "state", "summary", "head", "t_commit", "cases", "open", "question"],
+ "properties": {
+  "slice": {"type": "string", "description": "The § 7.1 row id, e.g. SL2."},
+  "state": {"enum": ["done", "blocked"], "description": "done: `bin/build check <id>` exits 0 at `head`. blocked: it does not, and `open` says why."},
+  "summary": {"type": "string", "maxLength": 1500, "description": "What changed and what proves it, in the product's words."},
+  "head": {"type": "string", "description": "`git rev-parse HEAD` of the slice branch when you answered."},
+  "t_commit": {"type": "string", "description": "The sha of the test-only commit T."},
+  "cases": {
+   "type": "array",
+   "description": "Every case the row's tests cell names, with its status at `head`.",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "status"],
+    "properties": {
+     "id": {"type": "string"},
+     "status": {"enum": ["pass", "fail", "not-run"]}
+    }
+   }
+  },
+  "open": {
+   "type": "array",
+   "description": "Every item a later reader must act on: a judgement the design was silent on, a deferred piece, a risk, a defect on a live page. An empty list claims there is none.",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["kind", "text", "owner"],
+    "properties": {
+     "kind": {"enum": ["judgement", "deferred", "risk", "live-defect"]},
+     "text": {"type": "string", "maxLength": 800},
+     "owner": {"enum": ["ryan", "chat", "next-slice"]}
+    }
+   }
+  },
+  "question": {"type": ["string", "null"], "description": "One question for the operator that blocks this slice, or null."}
+ }
+}

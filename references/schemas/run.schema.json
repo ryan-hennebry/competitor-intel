@@ -1,0 +1,19 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/run.schema.json",
+ "title": "run.json",
+ "description": "The run's identity, written once by the launch node at the run root. Every later node reads its jd_url and slug from here.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["run_id", "slug", "tz", "jd_url", "clone_sha", "governing_hash", "bar_key", "started_at"],
+ "properties": {
+  "run_id": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*-[0-9]{4}-[0-9]{2}-[0-9]{2}$", "description": "<slug>-<YYYY-MM-DD>, the run root's directory name."},
+  "slug": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "The hiring company's slug; the page publishes under it."},
+  "tz": {"const": "Europe/London"},
+  "jd_url": {"type": "string", "pattern": "^https?://"},
+  "clone_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$", "description": "The web-brief commit the run clone is pinned at."},
+  "governing_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "sha256 over the governing files at launch; the end-of-run gate compares it."},
+  "bar_key": {"type": "string", "pattern": "^[0-9a-f]{12,64}$", "description": "The bar cache key: a hash over quality-bar/, near-misses.tsv and rulings.tsv."},
+  "started_at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"}
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/snapshot.schema.json",
+ "title": "snapshots/<domain>.json",
+ "description": "One company's snapshot, written by its extractor. The fields below are the ones code joins on: the URL gate reads sources, the cohort gate reads captured, the page reads name. The rest of references/methodology.md's snapshot schema is the extractor's judgement and is not graded here.",
+ "type": "object",
+ "additionalProperties": true,
+ "required": ["domain", "name", "captured", "sources"],
+ "properties": {
+  "domain": {"type": "string", "pattern": "^[a-z0-9]+([.-][a-z0-9]+)*[.][a-z]{2,}$"},
+  "name": {"type": "string", "minLength": 1, "description": "Verbatim, as on the company's own site."},
+  "captured": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+  "sources": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": true,
+   "required": ["url", "type", "date"],
+   "properties": {
+    "url": {"type": "string", "pattern": "^https?://"},
+    "type": {"enum": ["primary", "research", "news", "data", "sentiment"]},
+    "date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}}}}
+ }
+}

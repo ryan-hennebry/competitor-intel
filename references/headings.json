@@ -1,0 +1,16 @@
+{
+  "what": "The slot catalogue: every section a brief can carry, in document order. A slot is a function and a stable ID; the heading is the words the run writes over it and is recorded per run, never here. `spine: true` is the five sections every brief carries (D3). `default` is the heading that ships where the run has nothing better to say. `references/briefing-template.md` carries the same list in prose and says what each slot holds; `build/build.py` reconciles the two and raises where they disagree. `web` marks the slots the page carries (`references/brief-contract.md` Part 2): every page carries all six, in the page's order, and prints no heading over `map`, whose figure sits under Quick take. `web: false` slots, with `spine` and this list's order, are the retired format's; `build/build.py` and `tools/headings-check.sh` still read them, and W23 removes them.",
+  "slots": [
+    { "id": "quick-take",       "web": true,  "spine": true,  "default": "Quick Take" },
+    { "id": "recommendations",  "web": true,  "spine": true,  "default": "Recommendations" },
+    { "id": "what-changed",     "web": true,  "spine": false, "default": "Where each rival is moving" },
+    { "id": "threat-landscape", "web": false, "spine": false, "default": "Threat Landscape" },
+    { "id": "open-questions",   "web": true,  "spine": true,  "default": "Open Questions" },
+    { "id": "say-do",           "web": false, "spine": false, "default": "What They Say, What They Do" },
+    { "id": "matrix",           "web": true,  "spine": false, "default": "Competitive Matrix" },
+    { "id": "stage-reach",      "web": false, "spine": false, "default": "Stage and Reach" },
+    { "id": "coverage-notes",   "web": false, "spine": true,  "default": "Coverage Notes" },
+    { "id": "sources",          "web": false, "spine": true,  "default": "Sources" },
+    { "id": "map",              "web": true,  "spine": false, "default": "The map" }
+  ]
+}

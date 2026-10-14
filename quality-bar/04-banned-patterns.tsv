@@ -1,0 +1,30 @@
+# The rule table tools/voice-lint.sh runs. Tab-separated. Lines starting # are comments.
+# Columns: id / pattern / scope / case / threshold / route / why / source / hits / last_hit
+#   pattern    POSIX extended regex, passed to grep after -e. No lookarounds: the matcher is grep,
+#              so a rule that needs one is written as a code check in the script instead.
+#   scope      all = prose and table cells. prose = lines that do not start with a pipe.
+#              Headings, link text, URLs, HTML tags and quoted third-party copy are blanked out of
+#              the copy every rule reads, so no row carries its own escape hatch.
+#   case       i = case-insensitive, s = case-sensitive.
+#   threshold  report from the Nth occurrence onward. 1 for every rule but the two capped ones.
+#   route      block = a finding, non-zero exit. truth = routed to the truth critic, exit unchanged.
+#   hits       incremented by the compound step. 0 hits in 5 consecutive runs retires the row.
+# Every row is measured GREEN on build/briefing.md and RED on its counter-example, and
+# `bash tools/voice-lint.sh --selftest` is where both measurements run.
+# A row that reds the exemplar does not land; see decisions.md for the three that did not.
+id	pattern	scope	case	threshold	route	why	source	hits	last_hit
+process_subject	\b(this (brief|report|document|run|analysis)|the (research|analysis|thesis|sweep|review)|our (research|analysis)|we (checked|found|reviewed|fetched)|pages? (fetched|reviewed|read|that answered)|fetched|(by|we|i) crawl(ed|ing)?|crawl(ed|ing)? ([0-9]+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|[a-z]+teen|twenty|thirty|forty|fifty|dozens?|hundreds?)|measured across|sources consulted|before this brief)\b	all	i	1	block	narrates the work rather than the world (P4, RF7)	21-voice-audit S1-S5	0
+count_subject	(^|[.!?”](\*\*)? )(\*\*)?(([0-9]{1,4}|One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve|Thirteen|Fourteen|Fifteen|Sixteen|Seventeen|Eighteen|Nineteen|Twenty|Thirty|Forty|Fifty)[a-z-]*) (pages|posts)\b	all	s	1	block	a count of pages read promoted to grammatical subject reads as a fetch log (P4); PLURAL only, the exemplar opens a sentence with One page per agent	21-voice-audit S6	0
+doc_passive	\b(is|are|was|were) (given|carried|shown|included|reported) (for|here)\b	all	i	1	block	the implied agent is the document	21-voice-audit S5, booked twice	0
+tool_name	\b(mkt1_[a-z_]+|snapshot|pipeline|subagent|ledger|voice-lint|claims-check)\b	all	i	1	block	a tool or phase named on the page (RF7)	register check 10b	0
+verif_tag	\[(VERIFIED|COMPANY CLAIM|Unknown|INFERRED|company-stated)\]	all	s	1	block	tags audit, prose persuades (RF8)	register check T3	0
+relative_date	\b([0-9]+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve) (days?|weeks?|months?) (old|ago|before)\b|\b(yesterday|last week|this week)\b	all	i	1	block	decays the moment it is read (RF9)	correctness audit C6-19	0
+signpost	\b(in this section|the key takeaway|it is worth noting|it.s worth noting|notably|importantly|let.s)\b	all	i	1	block	talks about the document	briefing-template A1	0
+llm_vocab	\b(delve|tapestry|pivotal|multifaceted|robust|seamless(ly)?|realm of|game-?changing|cutting-edge|best-in-class|world-class|industry-leading|leverag(e|es|ing))\b	all	i	1	block	stock LLM or unverifiable words	briefing-template A2	0
+adverb_opener	(^|[.!?”] )(Crucially|Notably|Moreover|Furthermore|Additionally|Importantly|Ultimately|Interestingly),	all	s	1	block	LLM sentence opener	briefing-template A3	0
+hedged_super	\b(one of the (largest|leading|biggest|few)|among the leading|arguably the)\b	all	i	1	block	a hedged superlative	briefing-template A4	0
+bold_colon	\*\*[^*]+\*\*:	all	i	1	block	a label posing as a finding	briefing-template A6	0
+not_x_but_y	\bnot [^.]{1,40}\bbut\b	all	i	2	block	antithesis tic, capped at one per brief	briefing-template A5	0
+semicolon	;	prose	i	2	block	the mark you cannot speak (P3)	register rule 1, exemplar 0 / a prior brief 16	0
+exclusive	\b(the only|no rival|none of (the|its)|every|all (five|six|seven|eight)|first to)\b	all	i	1	truth	needs a ledger row marked exclusive verified	correctness audit C3-08	0
+conditional	\b(growing|leading|largest|smallest|fastest)\b	all	i	1	truth	a comparative with no number behind it	BCP conditional vocabulary	0

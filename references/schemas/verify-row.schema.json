@@ -1,0 +1,17 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/verify-row.schema.json",
+ "title": "One verify.jsonl row",
+ "description": "span-verify's verdict on one span at one hash. The verdict node passes the page when every span hash in brief.json has a PASS row; an unchanged hash keeps its PASS.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["span_id", "span_hash", "verdict", "by", "at", "note"],
+ "properties": {
+  "span_id": {"type": "string", "pattern": "^[a-z]+([.][a-z_]+|[.][0-9]+)+$"},
+  "span_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$", "description": "sha256 of the span's canonical JSON, id excluded."},
+  "verdict": {"enum": ["PASS", "FAIL"]},
+  "by": {"type": "string", "minLength": 1, "description": "The node that judged it, with its attempt: span-verify-1."},
+  "at": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$"},
+  "note": {"type": "string"}
+ }
+}

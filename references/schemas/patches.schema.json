@@ -1,0 +1,94 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/patches.schema.json",
+ "title": "patches.json",
+ "description": "The arbiter's span patches under the one key patches, one object per span it changes. tools/apply-patches.py applies the set only when every patch holds: fix_old is the span's t exactly, a fix_new holding a numeral names its rows in c, and each changed field stays within its word cap. An empty list changes nothing. A patch that takes an allotted evidence clause off the page names it under departures.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "patches"
+ ],
+ "properties": {
+  "patches": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "span_id",
+     "fix_old",
+     "fix_new",
+     "c",
+     "finding_ids"
+    ],
+    "properties": {
+     "span_id": {
+      "type": "string",
+      "pattern": "^[a-z]+([.][a-z_]+|[.][0-9]+)+$"
+     },
+     "fix_old": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The span's t as it stands."
+     },
+     "fix_new": {
+      "type": "string",
+      "description": "The replacement t; empty deletes the span."
+     },
+     "c": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+       "type": "string",
+       "pattern": "^C-[0-9]{3,}$"
+      },
+      "description": "The rows fix_new rests on; [] only on connective text."
+     },
+     "finding_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+       "type": "string",
+       "minLength": 1
+      },
+      "description": "The findings the patch answers."
+     }
+    }
+   }
+  },
+  "departures": {
+   "type": "array",
+   "description": "Each allotted evidence-clause ID a patch takes off the page, with the rule that forced it; apply-patches adds them to departures.json, which brief-check A1 reads.",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "slot",
+     "id",
+     "reason"
+    ],
+    "properties": {
+     "slot": {
+      "enum": [
+       "quick-take",
+       "recommendations",
+       "what-changed",
+       "open-questions",
+       "matrix",
+       "map"
+      ]
+     },
+     "id": {
+      "type": "string",
+      "pattern": "^C-[0-9]{3,}$"
+     },
+     "reason": {
+      "type": "string",
+      "minLength": 1
+     }
+    }
+   }
+  }
+ }
+}

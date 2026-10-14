@@ -1,0 +1,15 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/thesis.schema.json",
+ "title": "05-thesis.json",
+ "description": "The rank node's output: the screened candidates, every screener verdict, the code rank and the locked candidate. allocate, author and the check-in read it; 05-thesis.md is rendered from it.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["candidates", "verdicts", "rank", "locked"],
+ "properties": {
+  "candidates": {"$ref": "candidates.schema.json#/$defs/candidates"},
+  "verdicts": {"type": "array", "minItems": 1, "items": {"$ref": "verdict.schema.json"}, "description": "Every screener verdict, three per candidate and per re-screen; each names its candidate in item."},
+  "rank": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$"}, "description": "Eligible candidate ids, best first, as rank.py orders them."},
+  "locked": {"type": ["string", "null"], "pattern": "^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$", "description": "rank[0]; null when no candidate is eligible (rank.py exit 3)."}
+ }
+}

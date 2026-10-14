@@ -1,0 +1,5 @@
+{
+ "mcpServers": {
+  "mkt1-mcp": {"type": "http", "url": "https://mcp.mkt1.co/mcp"}
+ }
+}

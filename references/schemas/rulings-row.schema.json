@@ -1,0 +1,19 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/rulings-row.schema.json",
+ "title": "One quality-bar/rulings.tsv row",
+ "description": "A standing ruling of the operator's, written by rule.py add with the fixtures that red on it. CI reds an active ruling without a red fixture. Every cell is a string.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["id", "class", "test", "example", "scope", "source", "fixture_id", "status"],
+ "properties": {
+  "id": {"type": "string", "pattern": "^[A-Z]+[0-9]+[a-z]?$"},
+  "class": {"type": "string", "pattern": "^[a-z]+(-[a-z]+)*$", "description": "constraint rows seed reader.json constraints[]; verdict and recital rows feed the card."},
+  "test": {"type": "string", "minLength": 1},
+  "example": {"type": "string", "minLength": 1},
+  "scope": {"type": "string", "minLength": 1},
+  "source": {"type": "string", "minLength": 1},
+  "fixture_id": {"type": "string", "pattern": "^[A-Za-z0-9-]+(,[A-Za-z0-9-]+)*$", "description": "Comma-separated fixture ids that red on the ruling."},
+  "status": {"enum": ["active", "retired"]}
+ }
+}

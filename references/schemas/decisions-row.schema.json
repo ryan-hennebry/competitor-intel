@@ -1,0 +1,16 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/decisions-row.schema.json",
+ "title": "One decisions.tsv row",
+ "description": "A node's applied recommendation (D2): the runner appends each decisions[] entry a node returns, and the report prints them for the operator's veto. Every cell is a string.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["id", "node", "question", "chosen", "reason"],
+ "properties": {
+  "id": {"type": "string", "pattern": "^D-[0-9]+$"},
+  "node": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"},
+  "question": {"type": "string", "minLength": 1},
+  "chosen": {"type": "string", "minLength": 1},
+  "reason": {"type": "string", "minLength": 1}
+ }
+}

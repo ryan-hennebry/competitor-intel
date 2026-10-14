@@ -1,0 +1,21 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/segments.schema.json",
+ "title": "segments.json",
+ "description": "The market-map node's five disjoint search spaces, one per discovery node. Each is a business shape, not a category label: who buys, what they buy, in which market and language.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["segments"],
+ "properties": {
+  "segments": {"type": "array", "minItems": 5, "maxItems": 5, "items": {"type": "object", "additionalProperties": false,
+   "required": ["id", "name", "shape", "market", "language", "queries", "why"],
+   "properties": {
+    "id": {"enum": ["1", "2", "3", "4", "5"], "description": "The discovery node's number: segment 1 is discover-1."},
+    "name": {"type": "string", "minLength": 1, "description": "A short label for the space, used in logs only."},
+    "shape": {"type": "string", "minLength": 1, "description": "Who the buyer is, what is bought, and what the contract is for."},
+    "market": {"type": "string", "minLength": 1, "description": "The country or region searched."},
+    "language": {"type": "string", "pattern": "^[a-z]{2}$", "description": "ISO 639-1 code of the market's own language, the language the queries are written in."},
+    "queries": {"type": "array", "minItems": 2, "items": {"type": "string", "minLength": 1}, "description": "Search queries for this shape, disjoint from every other segment's."},
+    "why": {"type": "string", "minLength": 1, "description": "The job ad or client page line this space rests on, quoted."}}}}
+ }
+}

@@ -1,0 +1,96 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/shape.schema.json",
+ "title": "shape.json",
+ "description": "The shape node's answer: the map, the matrix, each web slot's claims, budget and evidence clauses, the axes and rows it dropped, and its departures. tools/shape.py write turns it into 06-shape.json, 06-allocation.md and 06-budget.tsv; budget-check --allocation --web and --screened grade those.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["company", "map", "matrix", "slots", "dropped", "departures"],
+ "properties": {
+  "company": {"$ref": "#/$defs/slug", "description": "The hiring company's slug, COHORT's first."},
+  "map": {"type": "object", "additionalProperties": false, "required": ["across", "down", "answers"],
+   "properties": {
+    "across": {"$ref": "#/$defs/axis"},
+    "down": {"$ref": "#/$defs/axis"},
+    "answers": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/company_answers"},
+     "description": "One entry per COHORT slug, each once."}}},
+  "matrix": {"type": "object", "additionalProperties": false, "required": ["columns", "rows"],
+   "properties": {
+    "columns": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"$ref": "#/$defs/slug"},
+     "description": "Every COHORT slug once, the hiring company first."},
+    "rows": {"type": "array", "minItems": 1, "maxItems": 6, "items": {"$ref": "#/$defs/row"}}}},
+  "slots": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/slot"},
+   "description": "One entry per web slot, in page order: quick-take, map, recommendations, what-changed, matrix, open-questions."},
+  "dropped": {"type": "array", "items": {"$ref": "#/$defs/dropped"},
+   "description": "Every axis or row you drafted and cut, with the reason and the rows that decided it."},
+  "departures": {"type": "array", "items": {"$ref": "#/$defs/departure"},
+   "description": "One entry per evidence clause that must lead with a row the founder already holds; [] when none does."}
+ },
+ "$defs": {
+  "slug": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"},
+  "cid": {"type": "string", "pattern": "^C-[0-9]{3,}$"},
+  "ids": {"type": "array", "items": {"$ref": "#/$defs/cid"}},
+  "qid": {"type": "string", "pattern": "^Q[1-9][0-9]*$"},
+  "web_slot": {"enum": ["quick-take", "map", "recommendations", "what-changed", "matrix", "open-questions"]},
+  "axis": {"type": "object", "additionalProperties": false, "required": ["question", "yes", "no", "serves", "decision", "flips"],
+   "properties": {
+    "question": {"type": "string", "minLength": 1, "description": "Lower case, no question mark; a yes-or-no question a company's own pages or a closed list answer."},
+    "yes": {"type": "string", "minLength": 1, "description": "The yes column's header."},
+    "no": {"type": "string", "minLength": 1, "description": "The no column's header."},
+    "serves": {"$ref": "#/$defs/qid"},
+    "decision": {"type": "string", "minLength": 1, "description": "The decision this axis changes, from the served question's changes line."},
+    "flips": {"type": "string", "minLength": 1, "description": "Which answer moves that decision, and which way."}}},
+  "answer": {"type": "object", "additionalProperties": false, "required": ["answer", "name", "c", "integration"],
+   "properties": {
+    "answer": {"enum": ["yes", "no"]},
+    "name": {"type": ["string", "null"], "minLength": 1, "description": "The counterparty a yes names, verbatim in every cited row's claim; null under a no."},
+    "c": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/cid"}},
+    "integration": {"type": "array", "items": {"$ref": "#/$defs/cid"}, "description": "Under a no only: IDs from c whose quoted row's claim says integration; [] otherwise."}}},
+  "company_answers": {"type": "object", "additionalProperties": false, "required": ["company", "across", "down"],
+   "properties": {
+    "company": {"$ref": "#/$defs/slug"},
+    "across": {"$ref": "#/$defs/answer"},
+    "down": {"$ref": "#/$defs/answer"}}},
+  "row": {"type": "object", "additionalProperties": false, "required": ["label", "serves", "decision", "flips", "cells"],
+   "properties": {
+    "label": {"type": "string", "minLength": 1, "description": "The capability, with no colon, bracket or spaced dash."},
+    "serves": {"$ref": "#/$defs/qid"},
+    "decision": {"type": "string", "minLength": 1, "description": "The decision this row changes, from the served question's changes line."},
+    "flips": {"type": "string", "minLength": 1, "description": "The cell value that flips that decision, and which way."},
+    "cells": {"type": "array", "minItems": 2, "items": {"type": "array", "maxItems": 2, "items": {"$ref": "#/$defs/cid"}},
+     "description": "One per column, in column order: the 1-2 claim IDs the cell rests on, or [] where no row answers it (the page prints Unknown)."}}},
+  "evidence": {"type": "object", "additionalProperties": false, "required": ["label", "c", "fact"],
+   "properties": {
+    "label": {"type": "string", "description": "Which part of the slot it serves, such as rec 1; \"\" for a slot's one clause."},
+    "c": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/cid"}, "description": "The main fact's row first."},
+    "fact": {"type": "string", "minLength": 1, "description": "The fact with the row's own figure and qualifier; the sentence is the author's."}}},
+  "source": {"type": ["object", "null"], "additionalProperties": false, "required": ["file", "from", "to"],
+   "description": "A comp-<slug>.md line range holding a derivation outside the ledger (the distribution claim's), or null.",
+   "properties": {
+    "file": {"type": "string", "pattern": "^comp-[a-z0-9-]+\\.md$"},
+    "from": {"type": "integer", "minimum": 1},
+    "to": {"type": "integer", "minimum": 1}}},
+  "slot": {"type": "object", "additionalProperties": false, "required": ["slot", "need", "claims", "icp", "words", "items", "evidence", "source"],
+   "properties": {
+    "slot": {"$ref": "#/$defs/web_slot"},
+    "need": {"type": "string", "pattern": "^L[0-9]+$", "description": "The reader duty line this slot serves."},
+    "claims": {"$ref": "#/$defs/ids", "description": "The rows the slot may cite. Code adds the evidence clauses' IDs, and for map and matrix the shape's own."},
+    "icp": {"$ref": "#/$defs/ids", "description": "quick-take only: the buyer rows its ICP point compares; [] elsewhere."},
+    "words": {"type": "integer", "minimum": 1},
+    "items": {"type": "integer", "minimum": 1},
+    "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence"}},
+    "source": {"$ref": "#/$defs/source"}}},
+  "dropped": {"type": "object", "additionalProperties": false, "required": ["kind", "what", "serves", "reason", "c"],
+   "properties": {
+    "kind": {"enum": ["axis", "row"]},
+    "what": {"type": "string", "minLength": 1, "description": "The axis question or row label."},
+    "serves": {"$ref": "#/$defs/qid"},
+    "reason": {"type": "string", "minLength": 1},
+    "c": {"$ref": "#/$defs/ids"}}},
+  "departure": {"type": "object", "additionalProperties": false, "required": ["slot", "id", "reason"],
+   "properties": {
+    "slot": {"$ref": "#/$defs/web_slot"},
+    "id": {"$ref": "#/$defs/cid"},
+    "reason": {"type": "string", "minLength": 1, "description": "Why no row new to the founder can lead this clause."}}}
+ }
+}

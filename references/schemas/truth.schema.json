@@ -1,0 +1,102 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/truth.schema.json",
+ "title": "critic-truth's read",
+ "description": "The whole-page truth read: findings for the arbiter, and one PASS or FAIL per span of brief.json. Code writes each span verdict to verify.jsonl at the span's hash, so a span no patch touches keeps its PASS.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "findings",
+  "spans"
+ ],
+ "properties": {
+  "findings": {
+   "type": "array",
+   "items": {
+    "$ref": "#/$defs/finding"
+   }
+  },
+  "spans": {
+   "type": "array",
+   "items": {
+    "$ref": "#/$defs/span_verdict"
+   }
+  }
+ },
+ "$defs": {
+  "finding": {
+   "description": "A critic's finding on one span of brief.json. Code routes it by span_id and the span's claim IDs; the arbiter reads every finding and writes patches.json.",
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "critic",
+    "span_id",
+    "rule",
+    "severity",
+    "quote",
+    "note"
+   ],
+   "properties": {
+    "critic": {
+     "enum": [
+      "founder",
+      "truth",
+      "voice",
+      "redteam"
+     ]
+    },
+    "span_id": {
+     "type": "string",
+     "pattern": "^[a-z]+([.][a-z_]+|[.][0-9]+)+$",
+     "description": "The brief.json span's id."
+    },
+    "rule": {
+     "type": "string",
+     "pattern": "^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$",
+     "description": "The card test or rubric rule the finding applies, as the critic's card names it."
+    },
+    "severity": {
+     "enum": [
+      "BLOCKER",
+      "MATERIAL",
+      "MINOR"
+     ]
+    },
+    "quote": {
+     "type": "string",
+     "minLength": 1,
+     "description": "The span's words the finding is about, verbatim."
+    },
+    "note": {
+     "type": "string",
+     "minLength": 1
+    }
+   }
+  },
+  "span_verdict": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "span_id",
+    "verdict",
+    "note"
+   ],
+   "properties": {
+    "span_id": {
+     "type": "string",
+     "pattern": "^[a-z]+([.][a-z_]+|[.][0-9]+)+$"
+    },
+    "verdict": {
+     "enum": [
+      "PASS",
+      "FAIL"
+     ]
+    },
+    "note": {
+     "type": "string",
+     "description": "Why, in one line; the row or clause that fails it on a FAIL."
+    }
+   }
+  }
+ }
+}

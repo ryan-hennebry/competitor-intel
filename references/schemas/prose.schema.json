@@ -1,0 +1,39 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "references/schemas/prose.schema.json",
+ "title": "prose.json",
+ "description": "The author's prose spans, the only part of brief.json a model writes. tools/assemble.py joins them to the code-built skeleton (map, entities, matrix columns and cell claim IDs). Word caps are brief.schema.json's, field for field. departures records each allotted evidence clause the author had to leave off the page, which brief-check A1 reads.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["quick_take", "recommendations", "moves_heading", "moves", "matrix", "open_questions", "departures"],
+ "properties": {
+  "quick_take": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"type": "object", "additionalProperties": false, "required": ["lede", "body"],
+   "properties": {"lede": {"$ref": "#/$defs/spans", "x-maxWords": 14}, "body": {"$ref": "#/$defs/spans", "x-maxWords": 38}}}},
+  "recommendations": {"type": "array", "minItems": 1, "maxItems": 3, "items": {"type": "object", "additionalProperties": false, "required": ["test", "why", "next_step"],
+   "properties": {"test": {"$ref": "#/$defs/spans", "x-maxWords": 28}, "why": {"$ref": "#/$defs/spans", "x-maxWords": 44}, "next_step": {"$ref": "#/$defs/spans", "x-maxWords": 13}}}},
+  "moves_heading": {"type": "string", "minLength": 1, "x-maxWords": 5},
+  "moves": {"type": "array", "minItems": 1, "maxItems": 5, "items": {"type": "object", "additionalProperties": false, "required": ["rival", "date", "change", "meaning", "action"],
+   "properties": {"rival": {"type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "A names.json slug."},
+    "date": {"type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "change": {"$ref": "#/$defs/spans", "x-maxWords": 21}, "meaning": {"$ref": "#/$defs/spans", "x-maxWords": 18},
+    "action": {"enum": ["act", "watch"]}}}},
+  "matrix": {"type": "object", "additionalProperties": false, "required": ["heading", "cells", "legend"],
+   "properties": {"heading": {"type": "string", "minLength": 1, "x-maxWords": 5},
+    "cells": {"type": "array", "minItems": 1, "maxItems": 6, "description": "One entry per 06-shape.json matrix row, its label verbatim, one cell text per column in column order.",
+     "items": {"type": "object", "additionalProperties": false, "required": ["label", "cells"],
+      "properties": {"label": {"type": "string", "minLength": 1}, "cells": {"type": "array", "minItems": 2, "maxItems": 7, "items": {"type": "string", "minLength": 1, "x-maxWords": 5}}}}},
+    "legend": {"type": "array", "items": {"$ref": "#/$defs/span"}, "x-maxWords": 45}}},
+  "open_questions": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"$ref": "#/$defs/spans", "x-maxWords": 32}},
+  "departures": {"type": "array", "description": "One entry per allotted evidence-clause ID left off the page, with the reason; empty when every clause is on the page.",
+   "items": {"type": "object", "additionalProperties": false, "required": ["slot", "id", "reason"],
+    "properties": {"slot": {"enum": ["quick-take", "recommendations", "what-changed", "open-questions", "matrix", "map"]},
+     "id": {"type": "string", "pattern": "^C-[0-9]{3,}$"}, "reason": {"type": "string", "minLength": 1}}}}
+ },
+ "$defs": {
+  "span": {"type": "object", "additionalProperties": false, "required": ["t", "c"],
+   "properties": {"t": {"type": "string", "minLength": 1},
+    "c": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^C-[0-9]{3,}$"}, "description": "The rows the text rests on; [] only on connective text holding no numeral, name or quote."},
+    "q": {"const": true}, "g": {"const": true}}},
+  "spans": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/span"}}
+ }
+}

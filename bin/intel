@@ -1,0 +1,180 @@
+#!/usr/bin/env python3
+"""the operator's surface for Competitor Intel runs (design.md section 3, Human surface).
+
+  bin/intel run <jd-url> [--slug S] [--dry-run]   start tools/run.py under `caffeinate -i`; prints
+                                                  the run root first. --dry-run prints the graph.
+  bin/intel status [run] [--summary]              each node: state, elapsed, median of prior runs;
+                                                  --summary adds wall time and p50/p90 over runs
+  bin/intel cost [run] [--until N]                the one meter (tools/meter.py, M55): counted
+                                                  cache-read and costUSD, no-result attempts
+                                                  re-priced [INFERRED]; exit 1 on a meter red
+  bin/intel cost --session <transcript.jsonl> [--cutoff ISO] [--root R ...]
+                                                  the session meter (M60): the transcript and
+                                                  subagents started before the cutoff, the
+                                                  cost-state gap, run roots started inside it
+  bin/intel veto <run> --rank N | --note "..."    re-run from allocate with rank N, or from lock
+                                                  with the note as a run ruling
+  bin/intel resume <run> [--ff <sha>]             continue a stopped run; --ff first fast-forwards
+                                                  the clone to a pushed build-session commit (D3)
+
+Under INTEL_BUILD=1 (a build session, design.md M51) `run`, `resume` and `veto` exit 2 and start
+nothing.
+
+`run` defaults to the newest run under ~/competitor-intel-runs (or $INTEL_RUNS_DIR); a bare name
+is looked up there.
+"""
+import importlib.util
+import json
+import os
+import pathlib
+import shutil
+import subprocess
+import sys
+
+sys.dont_write_bytecode = True
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+RUN_PY = ROOT / "tools" / "run.py"
+METER_PY = ROOT / "tools" / "meter.py"
+
+
+def runner():
+    spec = importlib.util.spec_from_file_location("intel_run", RUN_PY)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def exec_runner(args):
+    cmd = [sys.executable, str(RUN_PY)] + args
+    if shutil.which("caffeinate"):
+        cmd = ["caffeinate", "-i"] + cmd
+    os.execvp(cmd[0], cmd)
+
+
+def find_run(r, name):
+    base = r.runs_dir()
+    if name:
+        path = pathlib.Path(name).expanduser()
+        if not path.is_absolute():
+            path = base / name
+        if not (path / "run.json").exists():
+            sys.exit(f"intel: no run at {path}")
+        return path
+    runs = sorted((p for p in base.glob("*") if (p / "run.json").exists()),
+                  key=lambda p: (p / "run.json").stat().st_mtime)
+    if not runs:
+        sys.exit(f"intel: no runs under {base}")
+    return runs[-1]
+
+
+def take(args, flag):
+    if flag in args:
+        i = args.index(flag)
+        if i + 1 >= len(args):
+            sys.exit(f"intel: {flag} needs a value")
+        value = args[i + 1]
+        del args[i:i + 2]
+        return value
+    return None
+
+
+def main(argv):
+    args = argv[1:]
+    if not args or args[0] in ("-h", "--help"):
+        print(__doc__)
+        return 0 if args else 2
+    cmd, rest = args[0], args[1:]
+    if cmd in ("run", "resume", "veto") and os.environ.get("INTEL_BUILD") == "1":
+        sys.stderr.write(f"intel {cmd}: INTEL_BUILD=1, a build session starts no run (design.md M51); "
+                         "nothing started\n")
+        return 2
+    if cmd == "run":
+        urls = [a for a in rest if a.startswith(("https://", "http://"))]
+        if len(urls) != 1 or any(a.startswith("-") and a not in ("--slug", "--dry-run") for a in rest):
+            sys.stderr.write("intel run: want exactly one http(s) job-ad URL and only --slug S or "
+                             "--dry-run; nothing started\n")
+            return 2
+        if "--dry-run" in rest:
+            os.execvp(sys.executable, [sys.executable, str(RUN_PY), "run"] + rest)
+        exec_runner(["run"] + rest)
+    r = runner()
+    if cmd == "status":
+        summary = "--summary" in rest
+        rest = [a for a in rest if a != "--summary"]
+        root = find_run(r, rest[0] if rest else None)
+        print(f"run {root}")
+        for line in r.status(root):
+            print(line)
+        if summary:
+            for line in r.summary(root):
+                print(line)
+        return 0
+    if cmd == "cost":
+        spec = importlib.util.spec_from_file_location("intel_meter", METER_PY)
+        meter = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(meter)
+        args = list(rest)
+        root = None
+        if "--session" not in args:
+            names = [a for i, a in enumerate(args) if not a.startswith("-")
+                     and not (i and args[i - 1] == "--until")]
+            root = find_run(r, names[0] if names else None)
+            args = [a for a in args if a not in names] + [str(root)]
+        try:
+            lines, code = meter.run_cli(args)
+        except meter.UsageError as exc:
+            sys.stderr.write(f"intel cost: {exc}\n")
+            return 2
+        print("\n".join(lines))
+        return code
+    if cmd == "veto":
+        rank, note = take(rest, "--rank"), take(rest, "--note")
+        if len(rest) != 1 or (rank is None) == (note is None):
+            sys.exit("intel: veto <run> --rank N | --note \"...\"")
+        root = find_run(r, rest[0])
+        target = "allocate" if rank is not None else "lock"
+        veto = {"rank": int(rank)} if rank is not None else {"note": note}
+        veto["at"] = r.iso()
+        (root / "veto.json").write_text(json.dumps(veto) + "\n")
+        with open(root / "decisions.tsv", "a", encoding="utf-8") as f:
+            f.write(f"V-{veto['at']}\tveto\t{'rank' if rank else 'note'}\t"
+                    f"{r.tsv(rank or note)}\tthe operator's veto; re-runs from {target}\n")
+        for name in r.invalidate(root, target):
+            print(f"invalidated {name}")
+        exec_runner(["resume", str(root)])
+    if cmd == "resume":
+        sha = take(rest, "--ff")
+        if len(rest) != 1:
+            sys.exit("intel: resume <run> [--ff <sha>]")
+        root = find_run(r, rest[0])
+        if sha:
+            meta = json.loads((root / "run.json").read_text())
+            pid = meta.get("pid")
+            if pid:
+                try:
+                    os.kill(pid, 0)
+                    sys.exit(f"intel: runner pid {pid} is alive; --ff waits for a node boundary")
+                except ProcessLookupError:
+                    pass
+            clone = root / "clone"
+            before = r.git(["rev-parse", "HEAD"], clone)
+            r.git(["fetch", "-q", "origin"], clone)
+            r.git(["merge", "-q", "--ff-only", sha], clone)
+            env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+            comp = subprocess.run([sys.executable, "tools/agents-compile.py", "--out", "tools/agents.json"],
+                                  cwd=clone, env=env, capture_output=True, text=True)
+            if comp.returncode:
+                sys.exit("intel: agents compile red after --ff:\n" + comp.stdout + comp.stderr)
+            meta.setdefault("ff", []).append({"from": before, "to": r.git(["rev-parse", "HEAD"], clone),
+                                              "at": r.iso()})
+            meta["clone_sha"] = meta["ff"][-1]["to"]
+            meta["governing_hash"] = r.governing_hash(clone)
+            (root / "run.json").write_text(json.dumps(meta, indent=1) + "\n")
+            print(f"fast-forwarded {before[:12]} -> {meta['clone_sha'][:12]}")
+        exec_runner(["resume", str(root)])
+    print(__doc__, file=sys.stderr)
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

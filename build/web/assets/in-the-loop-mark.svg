@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">In The Loop mark</title>
+  <desc id="desc">A white dot beside an open white loop on a smoke grey square.</desc>
+  <rect width="512" height="512" fill="#9DA3A8"/>
+  <path
+    fill="#FFFFFF"
+    d="M204 192c36 0 63 26 63 62 0 37-26 62-63 62-36 0-61-26-61-62 0-34 25-60 61-62Z"
+  />
+  <path
+    d="M260 120C390 138 390 371 262 388"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="50"
+    stroke-linecap="round"
+  />
+</svg>
