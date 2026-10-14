@@ -1,4 +1,4 @@
-# Competitor Intel
+# Competitor Intel Agent
 
 It researches a company and its rivals, and publishes a one-page brief where every finding cites the page it came from.
 
