@@ -4,14 +4,14 @@ It researches a company and its rivals, and publishes a one-page brief where eve
 
 **Example output: [ryanhennebry.xyz/competitor-intel-agent](https://ryanhennebry.xyz/competitor-intel-agent/)**
 
-[![The example brief, scrolling from the quick take through the recommendations, market map and comparison table](docs/brief-scroll.gif)](https://ryanhennebry.xyz/competitor-intel-agent/)
+[![The example brief, scrolling from the quick take and its market map through the recommendations and comparison table](docs/brief-scroll.gif)](https://ryanhennebry.xyz/competitor-intel-agent/)
 
 ## What the brief contains
 
 - **Quick take**: three findings the company doesn't already know, each one sourced.
 - **Recommendations**: what to do next quarter, each with a next step.
-- **Where the money is moving**: what each rival changed recently, or what it has stayed quiet about.
-- **How each teaches and sells**: a comparison table of terms, pricing and positioning, with an "unknown" wherever a rival's own site leaves the point open.
+- **What rivals changed**: what each rival changed recently, or what it has stayed quiet about.
+- **Comparison table**: terms, pricing and positioning side by side, with an "unknown" wherever a rival's own site leaves the point open.
 - **Open questions**: what the evidence couldn't settle.
 
 Each claim carries a source chip. Hover or tap it to see the evidence and the page it came from. A page that blocked the fetch is labelled as blocked, never guessed at.
